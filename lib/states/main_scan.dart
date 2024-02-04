@@ -30,19 +30,23 @@ class _MainScanState extends State<MainScan> {
       body: SafeArea(
           child: ListView(
         children: [
-          Container(
-            margin: const EdgeInsets.only(top: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                buttonScan(),
-                displayResult(),
-              ],
-            ),
-          ),
+          aboutScan(),
           displayData(),
         ],
       )),
+    );
+  }
+
+  Container aboutScan() {
+    return Container(
+      margin: const EdgeInsets.only(top: 40),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buttonScan(),
+          displayResult(),
+        ],
+      ),
     );
   }
 
@@ -78,6 +82,46 @@ class _MainScanState extends State<MainScan> {
                   const SizedBox(
                     height: 16,
                   ),
+                  Container(
+                    decoration: AppConstant().radiusBorder(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                              width: Get.width * 0.5 - 26,
+                              child: RadioListTile(
+                                value: 1,
+                                groupValue: appController.chooseStatus.last,
+                                onChanged: (value) {
+                                  appController.chooseStatus.add(value);
+                                },
+                                title: const WidgetText(data: 'สมบูรณ์'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: Get.width * 0.5 - 26,
+                              child: RadioListTile(
+                                value: 2,
+                                groupValue: appController.chooseStatus.last,
+                                onChanged: (value) {
+                                  appController.chooseStatus.add(value);
+                                },
+                                title: const WidgetText(data: 'ไม่สมบูรณ์'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        appController.chooseStatus.last == null
+                            ? const SizedBox()
+                            : appController.chooseStatus.last == 2
+                                ? WidgetText(data: 'show dropdown')
+                                : const SizedBox(),
+                      ],
+                    ),
+                  ),
                   const WidgetText(data: 'ImageBill :'),
                   const SizedBox(
                     height: 16,
@@ -103,14 +147,7 @@ class _MainScanState extends State<MainScan> {
                     WidgetButton(
                       label: 'Save',
                       pressFunc: () {
-
-
-
                         AppService().processUploadAndEditData();
-
-
-
-                        
                       },
                     )
                   ],
