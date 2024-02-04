@@ -4,7 +4,6 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class DataModel {
-
   final String invid;
   final String number;
   final String invdate;
@@ -28,14 +27,16 @@ class DataModel {
   final String WEBSCANDATE;
   final String WEBSCANBY;
   final String startdate;
-  final String memId;
-  final String imgBill;
+  final String mem_id;
+  final String img_bill;
   final String invImg;
   final String taxnum;
-  final String invStatus;
+  final String inv_status;
   final String latt1;
   final String long1;
-  final String invNon;
+  final String inv_non;
+  final String nonComplete;
+
   DataModel({
     required this.invid,
     required this.number,
@@ -60,17 +61,16 @@ class DataModel {
     required this.WEBSCANDATE,
     required this.WEBSCANBY,
     required this.startdate,
-    required this.memId,
-    required this.imgBill,
+    required this.mem_id,
+    required this.img_bill,
     required this.invImg,
     required this.taxnum,
-    required this.invStatus,
+    required this.inv_status,
     required this.latt1,
     required this.long1,
-    required this.invNon,
+    required this.inv_non,
+    required this.nonComplete,
   });
-
-  
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -97,14 +97,15 @@ class DataModel {
       'WEBSCANDATE': WEBSCANDATE,
       'WEBSCANBY': WEBSCANBY,
       'startdate': startdate,
-      'memId': memId,
-      'img_bill': imgBill,
+      'mem_id': mem_id,
+      'img_bill': img_bill,
       'invImg': invImg,
       'taxnum': taxnum,
-      'invStatus': invStatus,
+      'inv_status': inv_status,
       'latt1': latt1,
       'long1': long1,
-      'invNon': invNon,
+      'inv_non': inv_non,
+      'nonComplete': nonComplete,
     };
   }
 
@@ -133,18 +134,20 @@ class DataModel {
       WEBSCANDATE: (map['WEBSCANDATE'] ?? '') as String,
       WEBSCANBY: (map['WEBSCANBY'] ?? '') as String,
       startdate: (map['startdate'] ?? '') as String,
-      memId: (map['memId'] ?? '') as String,
-      imgBill: (map['img_bill'] ?? '') as String,
+      mem_id: (map['mem_id'] ?? '') as String,
+      img_bill: (map['img_bill'] ?? '') as String,
       invImg: (map['invImg'] ?? '') as String,
       taxnum: (map['taxnum'] ?? '') as String,
-      invStatus: (map['invStatus'] ?? '') as String,
+      inv_status: (map['inv_status'] ?? '') as String,
       latt1: (map['latt1'] ?? '') as String,
       long1: (map['long1'] ?? '') as String,
-      invNon: (map['invNon'] ?? '') as String,
+      inv_non: (map['inv_non'] ?? '') as String,
+      nonComplete: (map['nonComplete'] ?? '') as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory DataModel.fromJson(String source) => DataModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DataModel.fromJson(String source) =>
+      DataModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

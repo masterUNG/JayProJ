@@ -1,10 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, sort_child_properties_last
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:jayproj/states/scan_page.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
+import 'package:jayproj/utility/app_dialog.dart';
 import 'package:jayproj/utility/app_service.dart';
 import 'package:jayproj/widgets/widget_button.dart';
 import 'package:jayproj/widgets/widget_head_tail.dart';
@@ -117,7 +118,24 @@ class _MainScanState extends State<MainScan> {
                         appController.chooseStatus.last == null
                             ? const SizedBox()
                             : appController.chooseStatus.last == 2
-                                ? WidgetText(data: 'show dropdown')
+                                ? DropdownButton(
+                                    value: appController
+                                        .chooseNonConpleateTitles.last,
+                                    hint: const WidgetText(
+                                        data: 'โปรดเลือกความไม่สมบูรณ์'),
+                                    items: AppConstant.nonCompleateTitles
+                                        .map(
+                                          (e) => DropdownMenuItem(
+                                            child: WidgetText(data: e),
+                                            value: e,
+                                          ),
+                                        )
+                                        .toList(),
+                                    onChanged: (value) {
+                                      appController.chooseNonConpleateTitles
+                                          .add(value);
+                                    },
+                                  )
                                 : const SizedBox(),
                       ],
                     ),
@@ -139,7 +157,7 @@ class _MainScanState extends State<MainScan> {
         children: [
           appController.files.isEmpty
               ? WidgetImageNetwork(
-                  urlImage: appController.dataModels.last.imgBill)
+                  urlImage: appController.dataModels.last.img_bill)
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -147,7 +165,25 @@ class _MainScanState extends State<MainScan> {
                     WidgetButton(
                       label: 'Save',
                       pressFunc: () {
-                        AppService().processUploadAndEditData();
+
+                        if (appController.chooseStatus.last == null) {
+                          AppDialog().normalDialog(title: 'สมบูรณ์ หรือ ไม่ ?', contentWidget: const WidgetText(data: 'โปรดเลือก สมบูรณ์ หรือ ไม่สมบูรณ์ พร้อมเหตุผล'));
+                        } else if (appController.chooseStatus.last == 2) {
+
+                          //เลือกไม่สมบูรณ์
+                          if (appController.chooseNonConpleateTitles.last == null) {
+                            // ยังไม่ได้เลือกเหตุผล
+                            AppDialog().normalDialog(title: 'ยังไม่มีเหตุผล ?', contentWidget: const WidgetText(data: 'โปรดเลือกความไม่สมบูรณ์'));
+                          } else {
+                            //เลือกเหตุผลแล้ว
+                            AppService().processUploadAndEditData();
+                          }
+                          
+                        } else {
+
+                          //เลือกสมบูรณ์
+                          AppService().processUploadAndEditData();
+                        }
                       },
                     )
                   ],

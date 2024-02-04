@@ -11,4 +11,6 @@ class AppController extends GetxController {
   RxList<File> files = <File>[].obs;
 
   RxList<int?> chooseStatus = <int?>[null].obs;
+
+  RxList<String?> chooseNonConpleateTitles = <String?>[null].obs;
 }
