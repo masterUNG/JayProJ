@@ -26,11 +26,15 @@ if (isset($_GET)) {
 		$inv_status = $_GET['inv_status'];
 
 		$nonComplete = $_GET['nonComplete'];
+
+		$latt1 = $_GET['latt1'];
+
+		$long1 = $_GET['long1'];
 		
 		
 		
 							
-		$sql = "UPDATE `tbl_invfile` SET `img_bill` = '$img_bill', `inv_status` = '$inv_status', `nonComplete` = '$nonComplete' WHERE number = '$number'";
+		$sql = "UPDATE `tbl_invfile` SET `img_bill` = '$img_bill', `inv_status` = '$inv_status', `nonComplete` = '$nonComplete', `latt1` = '$latt1', `long1` = '$long1' WHERE number = '$number'";
 
 		$result = mysqli_query($link, $sql);
 
