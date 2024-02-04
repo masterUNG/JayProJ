@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jayproj/models/data_model.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
+import 'package:jayproj/utility/app_dialog.dart';
+import 'package:jayproj/widgets/widget_button.dart';
+import 'package:jayproj/widgets/widget_text.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
@@ -28,7 +32,7 @@ class AppService {
       String nonComplete = appController.chooseNonConpleateTitles.last ?? '';
 
       String urlAPI =
-          'https://www.androidthai.in.th/fluttertraining/JayProJ/editImageWhereNumber.php?isAdd=true&number=${appController.resultQR.value.trim()}&img_bill=$urlImage&inv_status=${appController.chooseStatus.last}&nonComplete=$nonComplete';
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/editImageWhereNumber.php?isAdd=true&number=${appController.resultQR.value.trim()}&img_bill=$urlImage&inv_status=${appController.chooseStatus.last}&nonComplete=$nonComplete&latt1=${appController.positions.last.latitude}&long1=${appController.positions.last.longitude}';
 
       await dio.Dio().get(urlAPI).then((value) {
         appController.resultQR.value = '';
@@ -75,5 +79,68 @@ class AppService {
         });
       }
     });
+  }
+
+  Future<void> processFindLocation() async {
+    bool locationService = await Geolocator.isLocationServiceEnabled();
+
+    if (locationService) {
+      //Open Service
+
+      LocationPermission locationPermission =
+          await Geolocator.checkPermission();
+
+      if (locationPermission == LocationPermission.deniedForever) {
+        // Denied Forver ไม่อนุญาติเลย
+        dialogCallPermission();
+      } else {
+        //Away, One, Denied
+
+        if (locationPermission == LocationPermission.denied) {
+          //Deied
+
+          locationPermission = await Geolocator.requestPermission();
+
+          if ((locationPermission != LocationPermission.always) &&
+              (locationPermission != LocationPermission.whileInUse)) {
+            //DeniedForever
+            dialogCallPermission();
+          } else {
+            //Away, One
+            Position position = await Geolocator.getCurrentPosition();
+            appController.positions.add(position);
+          }
+        } else {
+          //Away, One
+          Position position = await Geolocator.getCurrentPosition();
+          appController.positions.add(position);
+        }
+      }
+    } else {
+      //Off Service
+      AppDialog().normalDialog(
+          title: 'Off Location Service',
+          contentWidget: const WidgetText(data: 'Please Open Location Service'),
+          secondWidget: WidgetButton(
+            label: 'Open Service',
+            pressFunc: () async {
+              await Geolocator.openLocationSettings();
+              exit(0);
+            },
+          ));
+    }
+  }
+
+  void dialogCallPermission() {
+    AppDialog().normalDialog(
+        title: 'เปิด แชร์พิกัด',
+        contentWidget: const WidgetText(data: 'กรุณาเปิดการแชร์ พิกัด ด้วยคะ'),
+        secondWidget: WidgetButton(
+          label: 'Open Permission',
+          pressFunc: () async {
+            await Geolocator.openAppSettings();
+            exit(0);
+          },
+        ));
   }
 }

@@ -26,6 +26,13 @@ class _MainScanState extends State<MainScan> {
   AppController appController = Get.put(AppController());
 
   @override
+  void initState() {
+    super.initState();
+
+    AppService().processFindLocation().then((value) => print('position --> ${appController.positions.last}'));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -165,22 +172,26 @@ class _MainScanState extends State<MainScan> {
                     WidgetButton(
                       label: 'Save',
                       pressFunc: () {
-
                         if (appController.chooseStatus.last == null) {
-                          AppDialog().normalDialog(title: 'สมบูรณ์ หรือ ไม่ ?', contentWidget: const WidgetText(data: 'โปรดเลือก สมบูรณ์ หรือ ไม่สมบูรณ์ พร้อมเหตุผล'));
+                          AppDialog().normalDialog(
+                              title: 'สมบูรณ์ หรือ ไม่ ?',
+                              contentWidget: const WidgetText(
+                                  data:
+                                      'โปรดเลือก สมบูรณ์ หรือ ไม่สมบูรณ์ พร้อมเหตุผล'));
                         } else if (appController.chooseStatus.last == 2) {
-
                           //เลือกไม่สมบูรณ์
-                          if (appController.chooseNonConpleateTitles.last == null) {
+                          if (appController.chooseNonConpleateTitles.last ==
+                              null) {
                             // ยังไม่ได้เลือกเหตุผล
-                            AppDialog().normalDialog(title: 'ยังไม่มีเหตุผล ?', contentWidget: const WidgetText(data: 'โปรดเลือกความไม่สมบูรณ์'));
+                            AppDialog().normalDialog(
+                                title: 'ยังไม่มีเหตุผล ?',
+                                contentWidget: const WidgetText(
+                                    data: 'โปรดเลือกความไม่สมบูรณ์'));
                           } else {
                             //เลือกเหตุผลแล้ว
                             AppService().processUploadAndEditData();
                           }
-                          
                         } else {
-
                           //เลือกสมบูรณ์
                           AppService().processUploadAndEditData();
                         }

@@ -7,16 +7,22 @@ class AppDialog {
   void normalDialog({
     required String title,
     Widget? contentWidget,
+    Widget? firstWidget,
+    Widget? secondWidget,
   }) {
-    Get.dialog(AlertDialog(
-      title: WidgetText(data: title),
-      content: contentWidget,
-      actions: [
-        WidgetButton(
-          label: 'OK',
-          pressFunc: () => Get.back(),
-        )
-      ],
-    ));
+    Get.dialog(
+        AlertDialog(
+          title: WidgetText(data: title),
+          content: contentWidget,
+          actions: [
+            firstWidget ?? const SizedBox(),
+            secondWidget ??
+                WidgetButton(
+                  label: firstWidget == null ? 'OK' : 'Cancel',
+                  pressFunc: () => Get.back(),
+                )
+          ],
+        ),
+        barrierDismissible: false);
   }
 }
