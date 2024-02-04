@@ -19,13 +19,18 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 			
-		$number = $_GET['number'];		
+		$number = $_GET['number'];
+
 		$img_bill = $_GET['img_bill'];
+
+		$inv_status = $_GET['inv_status'];
+
+		$nonComplete = $_GET['nonComplete'];
 		
 		
 		
 							
-		$sql = "UPDATE `tbl_invfile` SET `img_bill` = '$img_bill' WHERE number = '$number'";
+		$sql = "UPDATE `tbl_invfile` SET `img_bill` = '$img_bill', `inv_status` = '$inv_status', `nonComplete` = '$nonComplete' WHERE number = '$number'";
 
 		$result = mysqli_query($link, $sql);
 

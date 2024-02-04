@@ -25,14 +25,26 @@ class AppService {
       String urlImage = '${AppConstant.domain}image/$nameFile';
       print('urlImage ----> $urlImage');
 
+      String nonComplete = appController.chooseNonConpleateTitles.last ?? '';
+
       String urlAPI =
-          'https://www.androidthai.in.th/fluttertraining/JayProJ/editImageWhereNumber.php?isAdd=true&number=${appController.resultQR.value.trim()}&img_bill=$urlImage';
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/editImageWhereNumber.php?isAdd=true&number=${appController.resultQR.value.trim()}&img_bill=$urlImage&inv_status=${appController.chooseStatus.last}&nonComplete=$nonComplete';
 
       await dio.Dio().get(urlAPI).then((value) {
+        appController.resultQR.value = '';
+
+        appController.dataModels.clear();
+
+        appController.files.clear();
+
+        appController.chooseStatus.clear();
+        appController.chooseStatus.add(null);
+
+        appController.chooseNonConpleateTitles.clear();
+        appController.chooseNonConpleateTitles.add(null);
+
         Get.snackbar('Save Success', 'ThankYou Save Data');
       });
-
-     
     });
   }
 
