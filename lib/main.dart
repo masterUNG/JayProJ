@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jayproj/states/authen.dart';
 import 'package:jayproj/states/main_scan.dart';
 
 void main() {
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       home: MainScan(),
+      // home: Authen(),
     );
   }
 }
@@ -24,7 +26,6 @@ class MyApp extends StatelessWidget {
 class MyHttpOverride extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    // TODO: implement createHttpClient
     return super.createHttpClient(context)
       ..badCertificateCallback = (cert, host, port) => true;
   }
