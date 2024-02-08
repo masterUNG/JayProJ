@@ -37,7 +37,7 @@ class AppService {
       String nonComplete = appController.chooseNonConpleateTitles.last ?? '';
 
       String urlAPI =
-          'https://www.androidthai.in.th/fluttertraining/JayProJ/editImageWhereNumber.php?isAdd=true&number=${appController.resultQR.value.trim()}&img_bill=$urlImage&inv_status=${appController.chooseStatus.last}&nonComplete=$nonComplete&latt1=${appController.positions.last.latitude}&long1=${appController.positions.last.longitude}';
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/editImageWhereNumber.php?isAdd=true&number=${appController.resultQR.value.trim()}&img_bill=$urlImage&inv_status=${appController.chooseStatus.last}&nonComplete=$nonComplete&latt1=${appController.positions.last.latitude}&long1=${appController.positions.last.longitude}&WEBSCAN=${appController.resultQR.value.trim()}&WEBSCANDATE=${DateTime.now()}&WEBSCANBY=${appController.currentUserModels.last.mem_name}';
 
       await dio.Dio().get(urlAPI).then((value) {
         appController.resultQR.value = '';

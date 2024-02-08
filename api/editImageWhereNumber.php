@@ -30,11 +30,17 @@ if (isset($_GET)) {
 		$latt1 = $_GET['latt1'];
 
 		$long1 = $_GET['long1'];
+
+		$WEBSCAN = $_GET['WEBSCAN'];
+
+		$WEBSCANDATE = $_GET['WEBSCANDATE'];
+
+		$WEBSCANBY = $_GET['WEBSCANBY'];
 		
 		
 		
 							
-		$sql = "UPDATE `tbl_invfile` SET `img_bill` = '$img_bill', `inv_status` = '$inv_status', `nonComplete` = '$nonComplete', `latt1` = '$latt1', `long1` = '$long1' WHERE number = '$number'";
+		$sql = "UPDATE `tbl_invfile` SET `img_bill` = '$img_bill', `inv_status` = '$inv_status', `nonComplete` = '$nonComplete', `latt1` = '$latt1', `long1` = '$long1', `WEBSCAN` = '$WEBSCAN', `WEBSCANDATE` = '$WEBSCANDATE', `WEBSCANBY` = '$WEBSCANBY' WHERE number = '$number'";
 
 		$result = mysqli_query($link, $sql);
 

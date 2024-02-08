@@ -203,6 +203,7 @@ class _MainScanState extends State<MainScan> {
                     WidgetButton(
                       label: 'Save',
                       pressFunc: () {
+                        
                         if (appController.chooseStatus.last == null) {
                           AppDialog().normalDialog(
                               title: 'สมบูรณ์ หรือ ไม่ ?',
