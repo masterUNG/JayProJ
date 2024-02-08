@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:jayproj/models/data_model.dart';
 
 class AppController extends GetxController {
-
   RxString resultQR = ''.obs;
 
   RxList<DataModel> dataModels = <DataModel>[].obs;
@@ -17,4 +16,6 @@ class AppController extends GetxController {
   RxList<String?> chooseNonConpleateTitles = <String?>[null].obs;
 
   RxList<Position> positions = <Position>[].obs;
+
+  RxBool redEye = true.obs;
 }

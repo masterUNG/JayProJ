@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-      home: MainScan(),
-      // home: Authen(),
+      // home: MainScan(),
+      home: Authen(),
     );
   }
 }

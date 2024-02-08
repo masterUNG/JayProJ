@@ -29,7 +29,11 @@ class _MainScanState extends State<MainScan> {
   void initState() {
     super.initState();
 
-    AppService().processFindLocation().then((value) => print('position --> ${appController.positions.last}'));
+    AppService()
+        .processFindLocation()
+        .then((value) => print('position --> ${appController.positions.last}'));
+
+    
   }
 
   @override

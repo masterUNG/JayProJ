@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -143,4 +144,6 @@ class AppService {
           },
         ));
   }
+
+ 
 }
