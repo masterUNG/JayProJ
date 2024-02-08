@@ -5,8 +5,11 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jayproj/models/data_model.dart';
+import 'package:jayproj/models/user_model.dart';
+import 'package:jayproj/states/main_scan.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
 import 'package:jayproj/utility/app_dialog.dart';
@@ -145,5 +148,39 @@ class AppService {
         ));
   }
 
- 
+  Future<void> processCheckLogin({
+    required String user,
+    required String password,
+  }) async {
+    String urlApi =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/getUserWhereMemUser.php?isAdd=true&mem_username=$user';
+
+    await dio.Dio().get(urlApi).then((value) {
+      if (value.toString() == 'null') {
+        Get.snackbar('User False', 'No $user in my Database',
+            backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
+      } else {
+        for (var element in json.decode(value.data)) {
+          UserModel userModel = UserModel.fromMap(element);
+
+          String passwordSha1 = userModel.mem_password;
+          print('## passowordSha1---> $passwordSha1');
+
+          var bytes = utf8.encode(password);
+          var userPasswordSha1 = sha1.convert(bytes);
+          print('## yserPasswordSha1 --> $userPasswordSha1');
+
+          if (passwordSha1 == userPasswordSha1.toString()) {
+            //Password True
+            Get.snackbar(
+                'Authen Success', 'Welcome คุณ${userModel.mem_name} To my App');
+            Get.offAll(const MainScan());
+          } else {
+            Get.snackbar('Password False', 'Please Try Again',
+                backgroundColor: GFColors.WARNING);
+          }
+        }
+      }
+    });
+  }
 }
