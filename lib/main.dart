@@ -2,13 +2,42 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jayproj/states/authen.dart';
 import 'package:jayproj/states/main_scan.dart';
 
-void main() {
+String? initialRoute;
+
+var getPages = <GetPage<dynamic>>[
+  GetPage(
+    name: '/authen',
+    page: () => const Authen(),
+  ),
+  GetPage(
+    name: '/mainScan',
+    page: () => const MainScan(),
+  ),
+];
+
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverride();
 
-  runApp(const MyApp());
+  await GetStorage.init().then((value) {
+    var data = GetStorage().read('data');
+    print('## data ที่อ่านได้จาก main ---> $data');
+
+    if (data == null) {
+      initialRoute = '/authen';
+      runApp(const MyApp());
+
+    } else {
+      initialRoute = '/mainScan';
+      runApp(const MyApp());
+
+    }
+
+    
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -16,9 +45,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      // home: MainScan(),
-      home: Authen(),
+    return GetMaterialApp(
+      getPages: getPages,
+      initialRoute: initialRoute,
+      theme: ThemeData(useMaterial3: true),
     );
   }
 }

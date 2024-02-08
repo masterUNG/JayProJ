@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, sort_child_properties_last
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:getwidget/getwidget.dart';
 
 import 'package:jayproj/states/scan_page.dart';
 import 'package:jayproj/utility/app_constant.dart';
@@ -29,16 +31,41 @@ class _MainScanState extends State<MainScan> {
   void initState() {
     super.initState();
 
+    AppService().processFindUserLogin();
+
     AppService()
         .processFindLocation()
         .then((value) => print('position --> ${appController.positions.last}'));
-
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            child: WidgetButton(
+              label: 'Sign Out',
+              pressFunc: () {
+                AppDialog().normalDialog(
+                    title: 'Sign Out ?',
+                    contentWidget:
+                        const WidgetText(data: 'Please Confirm for SignOut'),
+                    firstWidget: WidgetButton(
+                      label: 'Comfirm',
+                      pressFunc: () async {
+                        await GetStorage()
+                            .erase()
+                            .then((value) => Get.offAllNamed('/authen'));
+                      },
+                    ));
+              },
+              gfButtonType: GFButtonType.outline,
+            ),
+          )
+        ],
+      ),
       body: SafeArea(
           child: ListView(
         children: [
@@ -216,15 +243,39 @@ class _MainScanState extends State<MainScan> {
 
   Widget displayResult() {
     return Obx(() {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        alignment: Alignment.centerLeft,
-        width: 200,
-        height: 40,
-        decoration: AppConstant().radiusBorder(),
-        child: appController.resultQR.isEmpty
-            ? const WidgetText(data: 'Please Scan')
-            : WidgetText(data: appController.resultQR.value),
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          appController.currentUserModels.isEmpty
+              ? const SizedBox()
+              : SizedBox(
+                  width: 200,
+                  child: Row(
+                    children: [
+                      WidgetText(
+                        data: 'สวัสดี คุณ ',
+                        textStyle:
+                            AppConstant().h3Style(color: GFColors.PRIMARY),
+                      ),
+                      WidgetText(
+                        data: appController.currentUserModels.last.mem_name,
+                        textStyle: AppConstant().h3Style(color: Colors.purple),
+                      ),
+                    ],
+                  ),
+                ),
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerLeft,
+            width: 200,
+            height: 40,
+            decoration: AppConstant().radiusBorder(),
+            child: appController.resultQR.isEmpty
+                ? const WidgetText(data: 'Please Scan')
+                : WidgetText(data: appController.resultQR.value),
+          ),
+        ],
       );
     });
   }

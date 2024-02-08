@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:jayproj/models/data_model.dart';
+import 'package:jayproj/models/user_model.dart';
 
 class AppController extends GetxController {
   RxString resultQR = ''.obs;
@@ -18,4 +19,6 @@ class AppController extends GetxController {
   RxList<Position> positions = <Position>[].obs;
 
   RxBool redEye = true.obs;
+
+  RxList<UserModel> currentUserModels = <UserModel>[].obs;
 }

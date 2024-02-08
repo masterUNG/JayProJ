@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jayproj/models/data_model.dart';
@@ -155,7 +156,7 @@ class AppService {
     String urlApi =
         'https://www.androidthai.in.th/fluttertraining/JayProJ/getUserWhereMemUser.php?isAdd=true&mem_username=$user';
 
-    await dio.Dio().get(urlApi).then((value) {
+    await dio.Dio().get(urlApi).then((value) async {
       if (value.toString() == 'null') {
         Get.snackbar('User False', 'No $user in my Database',
             backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
@@ -172,9 +173,13 @@ class AppService {
 
           if (passwordSha1 == userPasswordSha1.toString()) {
             //Password True
-            Get.snackbar(
-                'Authen Success', 'Welcome คุณ${userModel.mem_name} To my App');
-            Get.offAll(const MainScan());
+
+            await GetStorage().write('data', userModel.toMap()).then((value) {
+              Get.snackbar('Authen Success',
+                  'Welcome คุณ${userModel.mem_name} To my App');
+
+              Get.offAll(const MainScan());
+            });
           } else {
             Get.snackbar('Password False', 'Please Try Again',
                 backgroundColor: GFColors.WARNING);
@@ -182,5 +187,11 @@ class AppService {
         }
       }
     });
+  }
+
+  Future<void> processFindUserLogin() async {
+    var data = await GetStorage().read('data');
+    UserModel userModel = UserModel.fromMap(data);
+    appController.currentUserModels.add(userModel);
   }
 }

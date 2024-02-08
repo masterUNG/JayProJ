@@ -7,13 +7,15 @@ class WidgetButton extends StatelessWidget {
     Key? key,
     required this.label,
     required this.pressFunc,
+    this.gfButtonType,
   }) : super(key: key);
 
   final String label;
   final Function() pressFunc;
+  final GFButtonType? gfButtonType;
 
   @override
   Widget build(BuildContext context) {
-    return GFButton(onPressed: pressFunc, text: label,);
+    return GFButton(onPressed: pressFunc, text: label, type: gfButtonType ?? GFButtonType.solid,);
   }
 }
