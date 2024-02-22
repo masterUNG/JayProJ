@@ -18,6 +18,7 @@ import 'package:jayproj/widgets/widget_image_file.dart';
 import 'package:jayproj/widgets/widget_image_network.dart';
 import 'package:jayproj/widgets/widget_text.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class MainScan extends StatefulWidget {
   const MainScan({super.key});
@@ -201,21 +202,19 @@ class _MainScanState extends State<MainScan> {
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // WidgetImageFile(file: appController.files.last),
-
-                    Container(
-                      width: Get.width,
-                      height: Get.width,
-                      child: PhotoView(
-                        imageProvider: FileImage(appController.files.last),
-                        maxScale: PhotoViewComputedScale.contained * 1.5,
-                        minScale: PhotoViewComputedScale.contained * 1.0,
-                        initialScale: PhotoViewComputedScale.contained * 1.0,
-                        backgroundDecoration:
-                            const BoxDecoration(color: Colors.white),
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: PhotoViewGallery.builder(
+                        itemCount: 1,
+                        builder: (context, index) =>
+                            PhotoViewGalleryPageOptions(
+                          imageProvider: FileImage(appController.files.last),
+                          maxScale: PhotoViewComputedScale.contained * 3.0,
+                          minScale: PhotoViewComputedScale.contained,
+                          initialScale: PhotoViewComputedScale.contained,
+                        ),
                       ),
                     ),
-
                     WidgetButton(
                       label: 'Save',
                       pressFunc: () {
