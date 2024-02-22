@@ -5,10 +5,15 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jayproj/states/authen.dart';
 import 'package:jayproj/states/main_scan.dart';
+import 'package:jayproj/states/welcome.dart';
 
 String? initialRoute;
 
 var getPages = <GetPage<dynamic>>[
+  GetPage(
+    name: '/welcome',
+    page: () => const Welcome(),
+  ),
   GetPage(
     name: '/authen',
     page: () => const Authen(),
@@ -27,18 +32,15 @@ Future<void> main() async {
     print('## data ที่อ่านได้จาก main ---> $data');
 
     if (data == null) {
-      initialRoute = '/authen';
+      // initialRoute = '/authen';
+      initialRoute = '/welcome';
       runApp(const MyApp());
-
     } else {
       initialRoute = '/mainScan';
       runApp(const MyApp());
-
     }
-
-    
   });
-}  
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

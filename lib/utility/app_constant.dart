@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class AppConstant {
+  static Color appColor = Color.fromARGB(255, 143, 164, 8);
+
   static var nonCompleateTitles = <String>[
     'ของชำรุด',
     'ไม่ตรงตามสั่ง',
@@ -17,6 +20,23 @@ class AppConstant {
   static String urlGetDataWhereNumber =
       'https://www.androidthai.in.th/fluttertraining/JayProJ/getDataWhereNumber.php?isAdd=true&number=';
 
+  BoxDecoration linearBox({
+    AlignmentGeometry? begin,
+    AlignmentGeometry? end,
+  }) =>
+      BoxDecoration(
+          gradient: LinearGradient(
+        colors: <Color>[Colors.white, appColor],
+        begin: begin ?? Alignment.centerLeft,
+        end: end ?? Alignment.centerRight,
+      ));
+
+  BoxDecoration radialBox() => BoxDecoration(
+          gradient: RadialGradient(
+        colors: <Color>[Colors.white, appColor],
+        radius: 1.0,
+      ));
+
   TextStyle h1Style({
     double? size,
     Color? color,
@@ -27,6 +47,7 @@ class AppConstant {
         color: color,
         fontWeight: fontWeight ?? FontWeight.bold);
   }
+
   TextStyle h2Style({
     double? size,
     Color? color,
@@ -37,6 +58,7 @@ class AppConstant {
         color: color,
         fontWeight: fontWeight ?? FontWeight.w700);
   }
+
   TextStyle h3Style({
     double? size,
     Color? color,
@@ -47,12 +69,6 @@ class AppConstant {
         color: color,
         fontWeight: fontWeight ?? FontWeight.normal);
   }
-
-
-
-
-
-
 
   BoxDecoration radiusBorder() => BoxDecoration(
         border: Border.all(),
