@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, sort_child_properties_last
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
@@ -16,6 +17,7 @@ import 'package:jayproj/widgets/widget_image_asset.dart';
 import 'package:jayproj/widgets/widget_image_file.dart';
 import 'package:jayproj/widgets/widget_image_network.dart';
 import 'package:jayproj/widgets/widget_text.dart';
+import 'package:photo_view/photo_view.dart';
 
 class MainScan extends StatefulWidget {
   const MainScan({super.key});
@@ -199,11 +201,24 @@ class _MainScanState extends State<MainScan> {
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    WidgetImageFile(file: appController.files.last),
+                    // WidgetImageFile(file: appController.files.last),
+
+                    Container(
+                      width: Get.width,
+                      height: Get.width,
+                      child: PhotoView(
+                        imageProvider: FileImage(appController.files.last),
+                        maxScale: PhotoViewComputedScale.contained * 1.5,
+                        minScale: PhotoViewComputedScale.contained * 1.0,
+                        initialScale: PhotoViewComputedScale.contained * 1.0,
+                        backgroundDecoration:
+                            const BoxDecoration(color: Colors.white),
+                      ),
+                    ),
+
                     WidgetButton(
                       label: 'Save',
                       pressFunc: () {
-                        
                         if (appController.chooseStatus.last == null) {
                           AppDialog().normalDialog(
                               title: 'สมบูรณ์ หรือ ไม่ ?',
