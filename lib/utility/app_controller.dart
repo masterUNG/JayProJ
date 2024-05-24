@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:jayproj/models/data_model.dart';
@@ -24,4 +25,6 @@ class AppController extends GetxController {
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
 
   RxInt indexBody = 0.obs;
+
+  RxList contentWidgets = <Widget>[].obs;
 }
