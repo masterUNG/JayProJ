@@ -10,6 +10,7 @@ import 'package:jayproj/utility/app_controller.dart';
 import 'package:jayproj/utility/app_dialog.dart';
 import 'package:jayproj/utility/app_service.dart';
 import 'package:jayproj/widgets/widget_button.dart';
+import 'package:jayproj/widgets/widget_button_scan.dart';
 import 'package:jayproj/widgets/widget_head_tail.dart';
 import 'package:jayproj/widgets/widget_icon_button.dart';
 import 'package:jayproj/widgets/widget_image_asset.dart';
@@ -315,28 +316,7 @@ class _MainScanState extends State<MainScan> {
 
         print('You tap');
       },
-      child: Container(
-        width: 96,
-        padding: const EdgeInsets.all(8),
-        decoration: AppConstant().radiusBorder(),
-        child: const AspectRatio(
-          aspectRatio: 1.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              WidgetImageAsset(
-                path: 'images/qr.png',
-                size: 48,
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              WidgetText(data: 'Scan')
-            ],
-          ),
-        ),
-      ),
+      child: const WidgetButtonScan(),
     );
   }
 }
