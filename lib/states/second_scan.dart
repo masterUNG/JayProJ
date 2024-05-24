@@ -26,6 +26,7 @@ class _SecondScanState extends State<SecondScan> {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         children: [
           aboutScan(),
+          const SizedBox(height: 32),
           FutureBuilder(
             future: AppService().readAmountMitsuDataWhereLogin(),
             builder: (context, snapshot) {
@@ -35,42 +36,62 @@ class _SecondScanState extends State<SecondScan> {
                   physics: const ScrollPhysics(),
                   shrinkWrap: true,
                   children: [
-                    Row(
+                    const Divider(color: Colors.grey,),
+                    const Row(
                       children: [
-                        Expanded(flex: 1,
+                        Expanded(
+                          flex: 1,
                           child: WidgetText(data: 'No:'),
                         ),
-                        Expanded(flex: 2,
+                        Expanded(
+                          flex: 2,
                           child: WidgetText(data: 'Code'),
                         ),
-                        Expanded(flex: 2,
+                        Expanded(
+                          flex: 2,
                           child: WidgetText(data: 'Name'),
                         ),
-                        Expanded(flex: 1,
+                        Expanded(
+                          flex: 1,
                           child: WidgetText(data: 'QTY'),
                         ),
                       ],
                     ),
+                    const Divider(color: Colors.grey,),
                     ListView.builder(
                       itemCount: amountMitsuModels.length,
                       physics: const ScrollPhysics(),
                       shrinkWrap: true,
-                      itemBuilder: (context, index) => Row(
-                      children: [
-                        Expanded(flex: 1,
-                          child: WidgetText(data: amountMitsuModels[index].id),
-                        ),
-                        Expanded(flex: 2,
-                          child: WidgetText(data: amountMitsuModels[index].code),
-                        ),
-                        Expanded(flex: 2,
-                          child: WidgetText(data: amountMitsuModels[index].name),
-                        ),
-                        Expanded(flex: 1,
-                          child: WidgetText(data: amountMitsuModels[index].qty),
-                        ),
-                      ],
-                    ),
+                      itemBuilder: (context, index) => Column(mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child:
+                                    WidgetText(data: amountMitsuModels[index].id),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child:
+                                    WidgetText(data: amountMitsuModels[index].code),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child:
+                                    WidgetText(data: amountMitsuModels[index].name),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child:
+                                    WidgetText(data: amountMitsuModels[index].qty),
+                              ),
+                            ],
+                          ),
+                          const Divider(color: Colors.grey,),
+                        ],
+                      ),
                     ),
                   ],
                 );
