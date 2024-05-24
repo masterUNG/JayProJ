@@ -215,13 +215,13 @@ class AppService {
     return mitsuModel;
   }
 
-  Future<AmountMitsuModel?> readAmountMitsuData({
-    required String code,
-  }) async {
+  Future<AmountMitsuModel?> readAmountMitsuData({required String code}) async {
     AmountMitsuModel? amountMitsuModel;
 
+    var mapUserModel = await GetStorage().read('data');
+
     String urlApi =
-        'https://www.androidthai.in.th/fluttertraining/JayProJ/getAmountMitsuWhereCode.php?isAdd=true&code=$code';
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/getAmountMitsuWhereCode.php?isAdd=true&code=$code&userId=${mapUserModel["mem_name"]}';
 
     var result = await dio.Dio().get(urlApi);
 
@@ -229,8 +229,6 @@ class AppService {
       //Without Data --> code
 
       var model = await readMitsuData(code: code);
-
-      var mapUserModel = await GetStorage().read('data');
 
       amountMitsuModel = AmountMitsuModel(
         id: '0',
@@ -250,8 +248,22 @@ class AppService {
       // readAmountMitsuData(code: code);
     } else {
       // Have Data --> code
+
       for (var element in json.decode(result.data)) {
-        amountMitsuModel = AmountMitsuModel.fromMap(element);
+        AmountMitsuModel model = AmountMitsuModel.fromMap(element);
+
+        Map<String, dynamic> map = model.toMap();
+
+        int qty = int.parse(map['qty']);
+        qty = qty + 1;
+
+        map['qty'] = qty.toString();
+
+        String urlApiEditQty =
+            'https://www.androidthai.in.th/fluttertraining/JayProJ/editQtyWhereId.php?isAdd=true&id=${model.id}&qty=${map["qty"]}';
+        await dio.Dio().get(urlApiEditQty);
+
+        amountMitsuModel = AmountMitsuModel.fromMap(map);
       }
     }
     return amountMitsuModel;
