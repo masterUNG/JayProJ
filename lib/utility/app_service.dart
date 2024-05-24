@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jayproj/models/data_model.dart';
+import 'package:jayproj/models/mitsu_model.dart';
 import 'package:jayproj/models/user_model.dart';
 import 'package:jayproj/states/main_home.dart';
 import 'package:jayproj/states/main_scan.dart';
@@ -196,4 +197,21 @@ class AppService {
     UserModel userModel = UserModel.fromMap(data);
     appController.currentUserModels.add(userModel);
   }
+
+  Future<MitsuModel?> readMitsuData({required String code}) async {
+    MitsuModel? mitsuModel;
+
+    String urlApi =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/getMitsuWhereCode.php?isAdd=true&code=$code';
+
+    var result = await dio.Dio().get(urlApi);
+
+    if (result.toString() != 'null') {
+      for (var element in json.decode(result.data)) {
+        mitsuModel = MitsuModel.fromMap(element);
+      }
+    }
+    return mitsuModel;
+  }
+  
 }
