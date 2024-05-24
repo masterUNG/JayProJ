@@ -21,4 +21,6 @@ class AppController extends GetxController {
   RxBool redEye = true.obs;
 
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
+
+  RxInt indexBody = 0.obs;
 }

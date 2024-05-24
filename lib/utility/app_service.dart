@@ -10,6 +10,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jayproj/models/data_model.dart';
 import 'package:jayproj/models/user_model.dart';
+import 'package:jayproj/states/main_home.dart';
 import 'package:jayproj/states/main_scan.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
@@ -178,7 +179,8 @@ class AppService {
               Get.snackbar('Authen Success',
                   'Welcome คุณ${userModel.mem_name} To my App');
 
-              Get.offAll(const MainScan());
+              // Get.offAll(const MainScan());
+              Get.offAll(const MainHome());
             });
           } else {
             Get.snackbar('Password False', 'Please Try Again',

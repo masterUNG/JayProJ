@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jayproj/states/authen.dart';
+import 'package:jayproj/states/main_home.dart';
 import 'package:jayproj/states/main_scan.dart';
 import 'package:jayproj/states/welcome.dart';
 
@@ -22,6 +23,10 @@ var getPages = <GetPage<dynamic>>[
     name: '/mainScan',
     page: () => const MainScan(),
   ),
+  GetPage(
+    name: '/mainHome',
+    page: () => const MainHome(),
+  ),
 ];
 
 Future<void> main() async {
@@ -36,7 +41,7 @@ Future<void> main() async {
       initialRoute = '/welcome';
       runApp(const MyApp());
     } else {
-      initialRoute = '/mainScan';
+      initialRoute = '/mainHome';
       runApp(const MyApp());
     }
   });
