@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jayproj/models/amount_mitsu_model.dart';
 import 'package:jayproj/models/data_model.dart';
 import 'package:jayproj/models/mitsu_model.dart';
 import 'package:jayproj/models/user_model.dart';
@@ -213,5 +214,46 @@ class AppService {
     }
     return mitsuModel;
   }
-  
+
+  Future<AmountMitsuModel?> readAmountMitsuData({
+    required String code,
+  }) async {
+    AmountMitsuModel? amountMitsuModel;
+
+    String urlApi =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/getAmountMitsuWhereCode.php?isAdd=true&code=$code';
+
+    var result = await dio.Dio().get(urlApi);
+
+    if (result.toString() == 'null') {
+      //Without Data --> code
+
+      var model = await readMitsuData(code: code);
+
+      var mapUserModel = await GetStorage().read('data');
+
+      amountMitsuModel = AmountMitsuModel(
+        id: '0',
+        code: code,
+        name: model!.name,
+        qty: '1',
+        userId: mapUserModel['mem_name'],
+        lat: appController.positions.last.latitude.toString(),
+        lng: appController.positions.last.longitude.toString(),
+      );
+
+      String urlApiInsert =
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model!.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+
+      await dio.Dio().get(urlApiInsert);
+
+      // readAmountMitsuData(code: code);
+    } else {
+      // Have Data --> code
+      for (var element in json.decode(result.data)) {
+        amountMitsuModel = AmountMitsuModel.fromMap(element);
+      }
+    }
+    return amountMitsuModel;
+  }
 }
