@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 
 class AppConstant {
   static Color appColor = const Color.fromARGB(255, 143, 164, 8);
+
+  static var titleSlids = <String>['Off', 'On',];
+
+  static var colors = <Color>[GFColors.DANGER, Colors.green.shade700];
+  static var colorBGs = <Color>[GFColors.WHITE, GFColors.DANGER.withOpacity(0.5)];
 
   static var nonCompleateTitles = <String>[
     'ของชำรุด',

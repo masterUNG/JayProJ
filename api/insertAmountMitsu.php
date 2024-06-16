@@ -25,7 +25,7 @@ if (isset($_GET)) {
 		$lat = $_GET['lat'];
 		$lng = $_GET['lng'];
 							
-		$sql = "INSERT INTO `tbl_amount_mitsu`(`id`, `code`, `name`, `qty`, `userId`, `lat`, `lng`) VALUES (Null,'$code','$name','$qty','$userId','$lat','$lng')";
+		$sql = "INSERT INTO `tbl_amount_mitsu`(`id`, `code`, `name`, `qty`, `userId`, `lat`, `lng`, `status`) VALUES (Null,'$code','$name','$qty','$userId','$lat','$lng','0')";
 
 		$result = mysqli_query($link, $sql);
 

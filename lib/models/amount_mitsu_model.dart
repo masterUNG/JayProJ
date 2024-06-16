@@ -9,6 +9,8 @@ class AmountMitsuModel {
   final String userId;
   final String lat;
   final String lng;
+  final String status;
+
   AmountMitsuModel({
     required this.id,
     required this.code,
@@ -17,6 +19,7 @@ class AmountMitsuModel {
     required this.userId,
     required this.lat,
     required this.lng,
+    required this.status,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +31,7 @@ class AmountMitsuModel {
       'userId': userId,
       'lat': lat,
       'lng': lng,
+      'status': status,
     };
   }
 
@@ -40,6 +44,7 @@ class AmountMitsuModel {
       userId: (map['userId'] ?? '') as String,
       lat: (map['lat'] ?? '') as String,
       lng: (map['lng'] ?? '') as String,
+      status: (map['status'] ?? '') as String,
     );
   }
 

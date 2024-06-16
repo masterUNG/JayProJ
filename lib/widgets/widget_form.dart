@@ -5,6 +5,7 @@ class WidgetForm extends StatelessWidget {
   const WidgetForm({
     Key? key,
     this.hint,
+    this.label,
     this.obsecu,
     this.suffixWidget,
     this.validateFunc,
@@ -12,6 +13,7 @@ class WidgetForm extends StatelessWidget {
   }) : super(key: key);
 
   final String? hint;
+  final String? label;
   final bool? obsecu;
   final Widget? suffixWidget;
   final String? Function(String?)? validateFunc;
@@ -26,6 +28,7 @@ class WidgetForm extends StatelessWidget {
         validator: validateFunc,
         obscureText: obsecu ?? false,
         decoration: InputDecoration(
+          labelText: label,
           filled: true,
           fillColor: Colors.grey.shade300,
           border: InputBorder.none,

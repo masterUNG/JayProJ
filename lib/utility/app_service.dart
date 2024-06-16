@@ -234,15 +234,15 @@ class AppService {
       amountMitsuModel = AmountMitsuModel(
         id: '0',
         code: code,
-        name: model!.name,
+        name: model?.name ?? '',
         qty: '1',
         userId: mapUserModel['mem_name'],
         lat: appController.positions.last.latitude.toString(),
-        lng: appController.positions.last.longitude.toString(),
+        lng: appController.positions.last.longitude.toString(), status: '0',
       );
 
       String urlApiInsert =
-          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model?.name ?? ""}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
 
       await dio.Dio().get(urlApiInsert);
 
