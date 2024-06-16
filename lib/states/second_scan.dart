@@ -113,39 +113,66 @@ class _SecondScanState extends State<SecondScan> {
                             extentRatio: 0.25,
                             children: <Widget>[
                               SlidableAction(
-                                onPressed: (context) {},
-                                // icon: Icons.recycling,
-                                label: AppConstant.titleSlids[int.parse(amountMitsuModels[index].status)],
-                                backgroundColor: AppConstant.colors[int.parse(amountMitsuModels[index].status)],
+                                onPressed: (context) {
+                                  String id = amountMitsuModels[index].id;
+                                  String currentStatus =
+                                      amountMitsuModels[index].status;
+
+                                  print(
+                                      'id ---> $id, currentStatus ---> $currentStatus');
+
+                                  int status = int.parse(currentStatus);
+                                  status++;
+
+                                  String newStatus = (status % 2).toString();
+
+                                  print('newStatus ===> $newStatus');
+
+                                  AppService()
+                                      .processUpdateStatus(
+                                          id: id, newStatus: newStatus)
+                                      .then(
+                                    (value) {
+                                      setState(() {});
+                                    },
+                                  );
+                                },
+                                label: AppConstant.titleSlids[
+                                    int.parse(amountMitsuModels[index].status)],
+                                backgroundColor: AppConstant.colors[
+                                    int.parse(amountMitsuModels[index].status)],
                               )
                             ],
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(decoration: BoxDecoration(color: AppConstant.colorBGs[int.parse(amountMitsuModels[index].status)]),
+                              Container(padding: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                    color: AppConstant.colorBGs[int.parse(
+                                        amountMitsuModels[index].status)]),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
                                       flex: 1,
                                       child: WidgetText(
-                                          data: amountMitsuModels[index].id),
+                                          data: amountMitsuModels[index].id, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
                                     ),
                                     Expanded(
                                       flex: 2,
                                       child: WidgetText(
-                                          data: amountMitsuModels[index].code),
+                                          data: amountMitsuModels[index].code, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
                                     ),
                                     Expanded(
                                       flex: 2,
                                       child: WidgetText(
-                                          data: amountMitsuModels[index].name),
+                                          data: amountMitsuModels[index].name, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
                                     ),
                                     Expanded(
                                       flex: 1,
                                       child: WidgetText(
-                                          data: amountMitsuModels[index].qty),
+                                          data: amountMitsuModels[index].qty, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
                                     ),
                                   ],
                                 ),

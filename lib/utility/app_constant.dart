@@ -7,7 +7,8 @@ class AppConstant {
   static var titleSlids = <String>['Off', 'On',];
 
   static var colors = <Color>[GFColors.DANGER, Colors.green.shade700];
-  static var colorBGs = <Color>[GFColors.WHITE, GFColors.DANGER.withOpacity(0.5)];
+  static var colorTexts = <Color>[Colors.black, Colors.white];
+  static var colorBGs = <Color>[GFColors.WHITE, GFColors.DANGER];
 
   static var nonCompleateTitles = <String>[
     'ของชำรุด',

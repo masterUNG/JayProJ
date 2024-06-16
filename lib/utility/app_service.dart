@@ -238,7 +238,8 @@ class AppService {
         qty: '1',
         userId: mapUserModel['mem_name'],
         lat: appController.positions.last.latitude.toString(),
-        lng: appController.positions.last.longitude.toString(), status: '0',
+        lng: appController.positions.last.longitude.toString(),
+        status: '0',
       );
 
       String urlApiInsert =
@@ -290,5 +291,13 @@ class AppService {
       }
     }
     return amountMitsuModels;
+  }
+
+  Future<void> processUpdateStatus(
+      {required String id, required String newStatus}) async {
+    String urlAPI =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/editStatusWhereId.php?isAdd=true&id=$id&status=$newStatus';
+
+    await dio.Dio().get(urlAPI);
   }
 }
