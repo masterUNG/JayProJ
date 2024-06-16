@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -13,7 +15,6 @@ import 'package:jayproj/models/data_model.dart';
 import 'package:jayproj/models/mitsu_model.dart';
 import 'package:jayproj/models/user_model.dart';
 import 'package:jayproj/states/main_home.dart';
-import 'package:jayproj/states/main_scan.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
 import 'package:jayproj/utility/app_dialog.dart';
@@ -241,7 +242,7 @@ class AppService {
       );
 
       String urlApiInsert =
-          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model!.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
 
       await dio.Dio().get(urlApiInsert);
 

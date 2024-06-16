@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, sort_child_properties_last
+// ignore_for_file: public_member_api_docs, sort_constructors_first, sort_child_properties_last, avoid_print
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,7 +13,6 @@ import 'package:jayproj/widgets/widget_button.dart';
 import 'package:jayproj/widgets/widget_button_scan.dart';
 import 'package:jayproj/widgets/widget_head_tail.dart';
 import 'package:jayproj/widgets/widget_icon_button.dart';
-import 'package:jayproj/widgets/widget_image_asset.dart';
 import 'package:jayproj/widgets/widget_image_network.dart';
 import 'package:jayproj/widgets/widget_text.dart';
 import 'package:photo_view/photo_view.dart';

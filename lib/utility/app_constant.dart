@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AppConstant {
-  static Color appColor = Color.fromARGB(255, 143, 164, 8);
+  static Color appColor = const Color.fromARGB(255, 143, 164, 8);
 
   static var nonCompleateTitles = <String>[
     'ของชำรุด',
