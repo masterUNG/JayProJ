@@ -14,6 +14,7 @@ import 'package:jayproj/widgets/widget_button_scan.dart';
 import 'package:jayproj/widgets/widget_head_tail.dart';
 import 'package:jayproj/widgets/widget_icon_button.dart';
 import 'package:jayproj/widgets/widget_image_network.dart';
+import 'package:jayproj/widgets/widget_sign_out.dart';
 import 'package:jayproj/widgets/widget_text.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -32,7 +33,7 @@ class _MainScanState extends State<MainScan> {
   void initState() {
     super.initState();
 
-    AppService().processFindUserLogin();
+    
 
     AppService()
         .processFindLocation()
@@ -42,31 +43,14 @@ class _MainScanState extends State<MainScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            child: WidgetButton(
-              label: 'Sign Out',
-              pressFunc: () {
-                AppDialog().normalDialog(
-                    title: 'Sign Out ?',
-                    contentWidget:
-                        const WidgetText(data: 'Please Confirm for SignOut'),
-                    firstWidget: WidgetButton(
-                      label: 'Comfirm',
-                      pressFunc: () async {
-                        await GetStorage()
-                            .erase()
-                            .then((value) => Get.offAllNamed('/authen'));
-                      },
-                    ));
-              },
-              gfButtonType: GFButtonType.outline,
-            ),
-          )
-        ],
-      ),
+      // appBar: AppBar(
+      //   actions: [
+      //     Container(
+      //       margin: const EdgeInsets.only(right: 16),
+      //       child: const WidgetSighOut(),
+      //     )
+      //   ],
+      // ),
       body: SafeArea(
           child: ListView(
         children: [
@@ -259,24 +243,7 @@ class _MainScanState extends State<MainScan> {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          appController.currentUserModels.isEmpty
-              ? const SizedBox()
-              : SizedBox(
-                  width: 200,
-                  child: Row(
-                    children: [
-                      WidgetText(
-                        data: 'สวัสดี คุณ ',
-                        textStyle:
-                            AppConstant().h3Style(color: GFColors.PRIMARY),
-                      ),
-                      WidgetText(
-                        data: appController.currentUserModels.last.mem_name,
-                        textStyle: AppConstant().h3Style(color: Colors.purple),
-                      ),
-                    ],
-                  ),
-                ),
+          // displayNameLogin(),
           Container(
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -291,6 +258,27 @@ class _MainScanState extends State<MainScan> {
         ],
       );
     });
+  }
+
+  Widget displayNameLogin() {
+    return appController.currentUserModels.isEmpty
+            ? const SizedBox()
+            : SizedBox(
+                width: 200,
+                child: Row(
+                  children: [
+                    WidgetText(
+                      data: 'สวัสดี คุณ ',
+                      textStyle:
+                          AppConstant().h3Style(color: GFColors.PRIMARY),
+                    ),
+                    WidgetText(
+                      data: appController.currentUserModels.last.mem_name,
+                      textStyle: AppConstant().h3Style(color: Colors.purple),
+                    ),
+                  ],
+                ),
+              );
   }
 
   InkWell buttonScan() {

@@ -24,7 +24,7 @@ class AppController extends GetxController {
 
   RxList<UserModel> currentUserModels = <UserModel>[].obs;
 
-  RxInt indexBody = 0.obs;
+  RxInt indexBody = 1.obs;
 
   RxList contentWidgets = <Widget>[].obs;
 }
