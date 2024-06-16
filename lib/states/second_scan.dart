@@ -9,6 +9,7 @@ import 'package:jayproj/models/mitsu_model.dart';
 import 'package:jayproj/states/scan_page.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
+import 'package:jayproj/utility/app_dialog.dart';
 import 'package:jayproj/utility/app_service.dart';
 import 'package:jayproj/widgets/widget_button.dart';
 import 'package:jayproj/widgets/widget_button_scan.dart';
@@ -28,6 +29,8 @@ class _SecondScanState extends State<SecondScan> {
   final keyForm = GlobalKey<FormState>();
   TextEditingController textEditingController = TextEditingController();
 
+  FocusNode focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,160 +41,255 @@ class _SecondScanState extends State<SecondScan> {
           children: [
             aboutScan(),
             const SizedBox(height: 32),
-            Form(
-              key: keyForm,
-              child: WidgetForm(
-                textEditingController: textEditingController,
-                validateFunc: (p0) {
-                  if (p0?.isEmpty ?? true) {
-                    return 'Please Fill Code';
-                  } else {
-                    return null;
-                  }
-                },
-                label: 'code :',
-                suffixWidget: WidgetButton(
-                  gfButtonType: GFButtonType.outline,
-                  label: 'Scan',
-                  pressFunc: () async {
-                    if (keyForm.currentState!.validate()) {
-                      await findResultFromCode(code: textEditingController.text)
-                          .then(
-                        (value) {
-                          textEditingController.clear();
-                        },
-                      );
-                    }
-                  },
-                ),
-              ),
-            ),
+            codeForm(),
             const SizedBox(height: 32),
-            FutureBuilder(
-              future: AppService().readAmountMitsuDataWhereLogin(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<AmountMitsuModel> amountMitsuModels = snapshot.data!;
-                  return ListView(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
+            listViewResult(),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row groupButton({required List<AmountMitsuModel> amountMitsuModels}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        WidgetButton(
+          label: 'Save',
+          pressFunc: () {
+            AppDialog().normalDialog(
+                title: 'Confirm Save',
+                contentWidget: const WidgetText(data: 'Please Confirm Save'),
+                firstWidget: WidgetButton(
+                  label: 'Confirm',
+                  pressFunc: () {
+                    AppService()
+                        .processSave(amountMitsuModels: amountMitsuModels)
+                        .then(
+                      (value) async {
+                        AppService()
+                            .processCancel(amountMitsuModels: amountMitsuModels)
+                            .then(
+                          (value) {
+                            Get.back();
+                            setState(() {});
+                          },
+                        );
+                      },
+                    );
+                  },
+                ));
+          },
+        ),
+        const SizedBox(width: 8),
+        WidgetButton(
+          label: 'Cancel',
+          gfButtonType: GFButtonType.outline2x,
+          pressFunc: () {
+            AppDialog().normalDialog(
+                title: 'Confirm Delete',
+                firstWidget: WidgetButton(
+                  label: 'Confirm',
+                  pressFunc: () {
+                    AppService()
+                        .processCancel(amountMitsuModels: amountMitsuModels)
+                        .then(
+                      (value) {
+                        Get.back();
+                        setState(() {});
+                      },
+                    );
+                  },
+                ));
+          },
+        ),
+      ],
+    );
+  }
+
+  FutureBuilder<List<AmountMitsuModel>> listViewResult() {
+    return FutureBuilder(
+      future: AppService().readAmountMitsuDataWhereLogin(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<AmountMitsuModel> amountMitsuModels = snapshot.data!;
+          return ListView(
+            physics: const ScrollPhysics(),
+            shrinkWrap: true,
+            children: [
+              const Divider(
+                color: Colors.grey,
+              ),
+              const Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: WidgetText(data: 'No:'),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: WidgetText(data: 'Code'),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: WidgetText(data: 'Name'),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: WidgetText(data: 'QTY'),
+                  ),
+                ],
+              ),
+              const Divider(
+                color: Colors.grey,
+              ),
+              ListView.builder(
+                itemCount: amountMitsuModels.length,
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Slidable(
+                  key: const ValueKey(0),
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    extentRatio: 0.25,
+                    children: <Widget>[
+                      SlidableAction(
+                        onPressed: (context) {
+                          String id = amountMitsuModels[index].id;
+                          String currentStatus =
+                              amountMitsuModels[index].status;
+
+                          print(
+                              'id ---> $id, currentStatus ---> $currentStatus');
+
+                          int status = int.parse(currentStatus);
+                          status++;
+
+                          String newStatus = (status % 2).toString();
+
+                          print('newStatus ===> $newStatus');
+
+                          AppService()
+                              .processUpdateStatus(id: id, newStatus: newStatus)
+                              .then(
+                            (value) {
+                              setState(() {});
+                            },
+                          );
+                        },
+                        label: AppConstant.titleSlids[
+                            int.parse(amountMitsuModels[index].status)],
+                        backgroundColor: AppConstant
+                            .colors[int.parse(amountMitsuModels[index].status)],
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      const Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: WidgetText(data: 'No:'),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: WidgetText(data: 'Code'),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: WidgetText(data: 'Name'),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: WidgetText(data: 'QTY'),
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      ListView.builder(
-                        itemCount: amountMitsuModels.length,
-                        physics: const ScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => Slidable(
-                          key: const ValueKey(0),
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            extentRatio: 0.25,
-                            children: <Widget>[
-                              SlidableAction(
-                                onPressed: (context) {
-                                  String id = amountMitsuModels[index].id;
-                                  String currentStatus =
-                                      amountMitsuModels[index].status;
-
-                                  print(
-                                      'id ---> $id, currentStatus ---> $currentStatus');
-
-                                  int status = int.parse(currentStatus);
-                                  status++;
-
-                                  String newStatus = (status % 2).toString();
-
-                                  print('newStatus ===> $newStatus');
-
-                                  AppService()
-                                      .processUpdateStatus(
-                                          id: id, newStatus: newStatus)
-                                      .then(
-                                    (value) {
-                                      setState(() {});
-                                    },
-                                  );
-                                },
-                                label: AppConstant.titleSlids[
-                                    int.parse(amountMitsuModels[index].status)],
-                                backgroundColor: AppConstant.colors[
-                                    int.parse(amountMitsuModels[index].status)],
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(padding: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                    color: AppConstant.colorBGs[int.parse(
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                            color: AppConstant.colorBGs[
+                                int.parse(amountMitsuModels[index].status)]),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: WidgetText(
+                                data: amountMitsuModels[index].id,
+                                textStyle: AppConstant().h3Style(
+                                    color: AppConstant.colorTexts[int.parse(
                                         amountMitsuModels[index].status)]),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: WidgetText(
-                                          data: amountMitsuModels[index].id, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: WidgetText(
-                                          data: amountMitsuModels[index].code, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: WidgetText(
-                                          data: amountMitsuModels[index].name, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: WidgetText(
-                                          data: amountMitsuModels[index].qty, textStyle: AppConstant().h3Style(color: AppConstant.colorTexts[int.parse(amountMitsuModels[index].status)]),),
-                                    ),
-                                  ],
-                                ),
                               ),
-                              const Divider(
-                                color: Colors.grey,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: WidgetText(
+                                data: amountMitsuModels[index].code,
+                                textStyle: AppConstant().h3Style(
+                                    color: AppConstant.colorTexts[int.parse(
+                                        amountMitsuModels[index].status)]),
                               ),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: WidgetText(
+                                data: amountMitsuModels[index].name,
+                                textStyle: AppConstant().h3Style(
+                                    color: AppConstant.colorTexts[int.parse(
+                                        amountMitsuModels[index].status)]),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: WidgetText(
+                                data: amountMitsuModels[index].qty,
+                                textStyle: AppConstant().h3Style(
+                                    color: AppConstant.colorTexts[int.parse(
+                                        amountMitsuModels[index].status)]),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      const Divider(
+                        color: Colors.grey,
+                      ),
                     ],
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
+              groupButton(amountMitsuModels: amountMitsuModels),
+            ],
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+
+  Form codeForm() {
+    return Form(
+      key: keyForm,
+      child: WidgetForm(
+        focusNode: focusNode,
+        autofocus: true,
+        textEditingController: textEditingController,
+        validateFunc: (p0) {
+          if (p0?.isEmpty ?? true) {
+            return 'Please Fill Code';
+          } else {
+            return null;
+          }
+        },
+        onFieldSubmitted: (p0) async {
+          if (keyForm.currentState!.validate()) {
+            await findResultFromCode(code: textEditingController.text).then(
+              (value) {
+                textEditingController.clear();
+                FocusScope.of(context).requestFocus(focusNode);
               },
-            ),
-          ],
+            );
+          }
+        },
+        label: 'code :',
+        suffixWidget: WidgetButton(
+          gfButtonType: GFButtonType.outline,
+          label: 'Scan',
+          pressFunc: () async {
+            if (keyForm.currentState!.validate()) {
+              await findResultFromCode(code: textEditingController.text).then(
+                (value) {
+                  textEditingController.clear();
+                },
+              );
+            }
+          },
         ),
       ),
     );

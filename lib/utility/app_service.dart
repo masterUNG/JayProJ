@@ -240,6 +240,7 @@ class AppService {
         lat: appController.positions.last.latitude.toString(),
         lng: appController.positions.last.longitude.toString(),
         status: '0',
+        timestamp: '',
       );
 
       String urlApiInsert =
@@ -299,5 +300,24 @@ class AppService {
         'https://www.androidthai.in.th/fluttertraining/JayProJ/editStatusWhereId.php?isAdd=true&id=$id&status=$newStatus';
 
     await dio.Dio().get(urlAPI);
+  }
+
+  Future<void> processSave(
+      {required List<AmountMitsuModel> amountMitsuModels}) async {
+    for (var element in amountMitsuModels) {
+      String urlAPI =
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsuAll.php?isAdd=true&code=${element.code}&name=${element.name}&qty=${element.qty}&userId=${element.userId}&lat=${element.lat}&lng=${element.lng}&status=${element.status}&timestamp=${element.timestamp}';
+
+      await dio.Dio().get(urlAPI);
+    }
+  }
+
+  Future<void> processCancel(
+      {required List<AmountMitsuModel> amountMitsuModels}) async {
+    for (var element in amountMitsuModels) {
+      String urlAPI = 'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereId.php?isAdd=true&id=${element.id}';
+
+      await dio.Dio().get(urlAPI);
+    }
   }
 }

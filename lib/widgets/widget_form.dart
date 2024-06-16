@@ -10,6 +10,10 @@ class WidgetForm extends StatelessWidget {
     this.suffixWidget,
     this.validateFunc,
     this.textEditingController,
+    this.autofocus,
+    this.onSaved,
+    this.onFieldSubmitted,
+    this.focusNode,
   }) : super(key: key);
 
   final String? hint;
@@ -18,12 +22,19 @@ class WidgetForm extends StatelessWidget {
   final Widget? suffixWidget;
   final String? Function(String?)? validateFunc;
   final TextEditingController? textEditingController;
+  final bool? autofocus;
+  final Function(String?)? onSaved;
+  final Function(String)? onFieldSubmitted;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
-      child: TextFormField(
+      child: TextFormField(focusNode: focusNode,
+        onFieldSubmitted: onFieldSubmitted,
+        onSaved: onSaved,
+        autofocus: autofocus ?? false,
         controller: textEditingController,
         validator: validateFunc,
         obscureText: obsecu ?? false,
