@@ -41,6 +41,15 @@ class _SecondScanState extends State<SecondScan> {
           children: [
             aboutScan(),
             const SizedBox(height: 32),
+            Obx(() => SwitchListTile(
+                  value: appController.displayForm.value,
+                  onChanged: (value) {
+                    appController.displayForm.value = value;
+                  },
+                  title:  WidgetText(data: appController.displayForm.value ?  'Hint Form' : 'Display Form'),
+                  controlAffinity: ListTileControlAffinity.leading,
+                )),
+            // const SizedBox(height: 32),
             codeForm(),
             const SizedBox(height: 32),
             listViewResult(),
@@ -269,46 +278,50 @@ class _SecondScanState extends State<SecondScan> {
     );
   }
 
-  Form codeForm() {
-    return Form(
-      key: keyForm,
-      child: WidgetForm(
-        focusNode: focusNode,
-        autofocus: true,
-        textEditingController: textEditingController,
-        validateFunc: (p0) {
-          if (p0?.isEmpty ?? true) {
-            return 'Please Fill Code';
-          } else {
-            return null;
-          }
-        },
-        onFieldSubmitted: (p0) async {
-          if (keyForm.currentState!.validate()) {
-            await findResultFromCode(code: textEditingController.text).then(
-              (value) {
-                textEditingController.clear();
-                FocusScope.of(context).requestFocus(focusNode);
+  Widget codeForm() {
+    return Obx(() => appController.displayForm.value
+        ? Form(
+            key: keyForm,
+            child: WidgetForm(
+              focusNode: focusNode,
+              autofocus: true,
+              textEditingController: textEditingController,
+              validateFunc: (p0) {
+                if (p0?.isEmpty ?? true) {
+                  return 'Please Fill Code';
+                } else {
+                  return null;
+                }
               },
-            );
-          }
-        },
-        label: 'code :',
-        suffixWidget: WidgetButton(
-          gfButtonType: GFButtonType.outline,
-          label: 'Scan',
-          pressFunc: () async {
-            if (keyForm.currentState!.validate()) {
-              await findResultFromCode(code: textEditingController.text).then(
-                (value) {
-                  textEditingController.clear();
+              onFieldSubmitted: (p0) async {
+                if (keyForm.currentState!.validate()) {
+                  await findResultFromCode(code: textEditingController.text)
+                      .then(
+                    (value) {
+                      textEditingController.clear();
+                      FocusScope.of(context).requestFocus(focusNode);
+                    },
+                  );
+                }
+              },
+              label: 'code :',
+              suffixWidget: WidgetButton(
+                gfButtonType: GFButtonType.outline,
+                label: 'Scan',
+                pressFunc: () async {
+                  if (keyForm.currentState!.validate()) {
+                    await findResultFromCode(code: textEditingController.text)
+                        .then(
+                      (value) {
+                        textEditingController.clear();
+                      },
+                    );
+                  }
                 },
-              );
-            }
-          },
-        ),
-      ),
-    );
+              ),
+            ),
+          )
+        : const SizedBox());
   }
 
   Row aboutScan() {
@@ -360,7 +373,7 @@ class _SecondScanState extends State<SecondScan> {
   }
 
   Future<void> findResultFromCode({required String code}) async {
-    appController.resultQR.value = code.toString();
+    appController.resultQR.value = code.toUpperCase().toString();
 
     AmountMitsuModel? amountMitsuModel = await AppService()
         .readAmountMitsuData(code: appController.resultQR.value);
