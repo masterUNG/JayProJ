@@ -33,8 +33,6 @@ class _MainScanState extends State<MainScan> {
   void initState() {
     super.initState();
 
-    
-
     AppService()
         .processFindLocation()
         .then((value) => print('position --> ${appController.positions.last}'));
@@ -262,23 +260,22 @@ class _MainScanState extends State<MainScan> {
 
   Widget displayNameLogin() {
     return appController.currentUserModels.isEmpty
-            ? const SizedBox()
-            : SizedBox(
-                width: 200,
-                child: Row(
-                  children: [
-                    WidgetText(
-                      data: 'สวัสดี คุณ ',
-                      textStyle:
-                          AppConstant().h3Style(color: GFColors.PRIMARY),
-                    ),
-                    WidgetText(
-                      data: appController.currentUserModels.last.mem_name,
-                      textStyle: AppConstant().h3Style(color: Colors.purple),
-                    ),
-                  ],
+        ? const SizedBox()
+        : SizedBox(
+            width: 200,
+            child: Row(
+              children: [
+                WidgetText(
+                  data: 'สวัสดี คุณ ',
+                  textStyle: AppConstant().h3Style(color: GFColors.PRIMARY),
                 ),
-              );
+                WidgetText(
+                  data: appController.currentUserModels.last.mem_name,
+                  textStyle: AppConstant().h3Style(color: Colors.purple),
+                ),
+              ],
+            ),
+          );
   }
 
   InkWell buttonScan() {

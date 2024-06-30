@@ -226,28 +226,31 @@ class AppService {
 
     var result = await dio.Dio().get(urlApi);
 
+    print('##30june urlAPI ===> $urlApi');
+    print('##30june result ===> $result');
+
     if (result.toString() == 'null') {
-      
-      Get.snackbar('NO data', 'No Data');
 
-      //Without Data --> code จะสร้างข้อมูลใหม่ ตามโค้ดที่ สแกนได้
-      // var model = await readMitsuData(code: code);
-      // amountMitsuModel = AmountMitsuModel(
-      //   id: '0',
-      //   code: code,
-      //   name: model?.name ?? '',
-      //   qty: '1',
-      //   userId: mapUserModel['mem_name'],
-      //   lat: appController.positions.last.latitude.toString(),
-      //   lng: appController.positions.last.longitude.toString(),
-      //   status: '0',
-      //   timestamp: '',
-      // );
+      Get.snackbar('New Code', 'Create New Code to Temp');
 
-      // String urlApiInsert =
-      //     'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model?.name ?? ""}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+      // Without Data --> code จะสร้างข้อมูลใหม่ ตามโค้ดที่ สแกนได้
+      var model = await readMitsuData(code: code);
+      amountMitsuModel = AmountMitsuModel(
+        id: '0',
+        code: code,
+        name: model?.name ?? '',
+        qty: '1',
+        userId: mapUserModel['mem_name'],
+        lat: appController.positions.last.latitude.toString(),
+        lng: appController.positions.last.longitude.toString(),
+        status: '0',
+        timestamp: '',
+      );
 
-      // await dio.Dio().get(urlApiInsert);
+      String urlApiInsert =
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model?.name ?? ""}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+
+      await dio.Dio().get(urlApiInsert);
 
       // readAmountMitsuData(code: code);
     } else {

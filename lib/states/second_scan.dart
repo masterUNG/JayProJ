@@ -325,7 +325,9 @@ class _SecondScanState extends State<SecondScan> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     WidgetText(data: 'code : ${mitsuModel.code}'),
-                    WidgetText(data: 'mame : ${mitsuModel.name}'),
+                    SizedBox(width: 200,
+                      child: WidgetText(data: 'mame : ${mitsuModel.name}'),
+                    ),
                     WidgetText(data: 'type : ${mitsuModel.type}'),
                     WidgetText(data: 'gprice : ${mitsuModel.gprice}'),
                   ],
