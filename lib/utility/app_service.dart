@@ -227,26 +227,27 @@ class AppService {
     var result = await dio.Dio().get(urlApi);
 
     if (result.toString() == 'null') {
-      //Without Data --> code
+      
+      Get.snackbar('NO data', 'No Data');
 
-      var model = await readMitsuData(code: code);
+      //Without Data --> code จะสร้างข้อมูลใหม่ ตามโค้ดที่ สแกนได้
+      // var model = await readMitsuData(code: code);
+      // amountMitsuModel = AmountMitsuModel(
+      //   id: '0',
+      //   code: code,
+      //   name: model?.name ?? '',
+      //   qty: '1',
+      //   userId: mapUserModel['mem_name'],
+      //   lat: appController.positions.last.latitude.toString(),
+      //   lng: appController.positions.last.longitude.toString(),
+      //   status: '0',
+      //   timestamp: '',
+      // );
 
-      amountMitsuModel = AmountMitsuModel(
-        id: '0',
-        code: code,
-        name: model?.name ?? '',
-        qty: '1',
-        userId: mapUserModel['mem_name'],
-        lat: appController.positions.last.latitude.toString(),
-        lng: appController.positions.last.longitude.toString(),
-        status: '0',
-        timestamp: '',
-      );
+      // String urlApiInsert =
+      //     'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model?.name ?? ""}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
 
-      String urlApiInsert =
-          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model?.name ?? ""}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
-
-      await dio.Dio().get(urlApiInsert);
+      // await dio.Dio().get(urlApiInsert);
 
       // readAmountMitsuData(code: code);
     } else {
@@ -315,7 +316,8 @@ class AppService {
   Future<void> processCancel(
       {required List<AmountMitsuModel> amountMitsuModels}) async {
     for (var element in amountMitsuModels) {
-      String urlAPI = 'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereId.php?isAdd=true&id=${element.id}';
+      String urlAPI =
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereId.php?isAdd=true&id=${element.id}';
 
       await dio.Dio().get(urlAPI);
     }
