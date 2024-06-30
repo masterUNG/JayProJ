@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:jayproj/states/main_scan.dart';
 import 'package:jayproj/states/second_scan.dart';
+import 'package:jayproj/states/third_scan.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
 import 'package:jayproj/utility/app_service.dart';
@@ -18,13 +19,13 @@ class MainHome extends StatefulWidget {
 
 class _MainHomeState extends State<MainHome> {
   var bodys = <Widget>[
-    const MainScan(),
     const SecondScan(),
+    const ThirdScan(),
   ];
 
   var titles = <String>[
-    'Main Scan',
-    'Second Scan',
+    'Scan In',
+    'Scan Out',
   ];
 
   var icons = <IconData>[

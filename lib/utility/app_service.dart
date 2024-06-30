@@ -327,6 +327,15 @@ class AppService {
       await dio.Dio().get(urlAPI);
     }
   }
+  Future<void> processSaveOut(
+      {required List<AmountMitsuModel> amountMitsuModels}) async {
+    for (var element in amountMitsuModels) {
+      String urlAPI =
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsuOut.php?isAdd=true&code=${element.code}&name=${element.name}&qty=${element.qty}&userId=${element.userId}&lat=${element.lat}&lng=${element.lng}&status=${element.status}&timestamp=${element.timestamp}';
+
+      await dio.Dio().get(urlAPI);
+    }
+  }
 
   Future<void> processCancel(
       {required List<AmountMitsuModel> amountMitsuModels}) async {
