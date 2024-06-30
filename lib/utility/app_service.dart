@@ -337,4 +337,11 @@ class AppService {
       await dio.Dio().get(urlAPI);
     }
   }
+
+  Future<void> processDeleteById({required String id}) async {
+    String urlAPI =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereId.php?isAdd=true&id=$id';
+
+    await dio.Dio().get(urlAPI);
+  }
 }

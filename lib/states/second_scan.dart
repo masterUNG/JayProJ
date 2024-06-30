@@ -152,8 +152,23 @@ class _SecondScanState extends State<SecondScan> {
                   key: const ValueKey(0),
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
-                    extentRatio: 0.25,
+                    extentRatio: 0.5,
                     children: <Widget>[
+                      SlidableAction(
+                        onPressed: (context) {
+                          String id = amountMitsuModels[index].id;
+
+                          print('##30june you delete id --> $id');
+
+                          AppService().processDeleteById(id: id).then(
+                            (value) {
+                              setState(() {});
+                            },
+                          );
+                        },
+                        backgroundColor: GFColors.PRIMARY,
+                        label: 'Del',
+                      ),
                       SlidableAction(
                         onPressed: (context) {
                           String id = amountMitsuModels[index].id;
@@ -200,7 +215,7 @@ class _SecondScanState extends State<SecondScan> {
                               flex: 1,
                               child: WidgetText(
                                 // data: amountMitsuModels[index].id,
-                                data: (index +1).toString(),
+                                data: (index + 1).toString(),
                                 textStyle: AppConstant().h3Style(
                                     color: AppConstant.colorTexts[int.parse(
                                         amountMitsuModels[index].status)]),
@@ -326,7 +341,8 @@ class _SecondScanState extends State<SecondScan> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     WidgetText(data: 'code : ${mitsuModel.code}'),
-                    SizedBox(width: 200,
+                    SizedBox(
+                      width: 200,
                       child: WidgetText(data: 'mame : ${mitsuModel.name}'),
                     ),
                     WidgetText(data: 'type : ${mitsuModel.type}'),
