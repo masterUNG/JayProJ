@@ -41,15 +41,7 @@ class _SecondScanState extends State<SecondScan> {
           children: [
             aboutScan(),
             const SizedBox(height: 32),
-            Obx(() => SwitchListTile(
-                  value: appController.displayForm.value,
-                  onChanged: (value) {
-                    appController.displayForm.value = value;
-                  },
-                  title:  WidgetText(data: appController.displayForm.value ?  'Hint Form' : 'Display Form'),
-                  controlAffinity: ListTileControlAffinity.leading,
-                )),
-            // const SizedBox(height: 32),
+            switchDisplayForm(),
             codeForm(),
             const SizedBox(height: 32),
             listViewResult(),
@@ -58,6 +50,20 @@ class _SecondScanState extends State<SecondScan> {
         ),
       ),
     );
+  }
+
+  Obx switchDisplayForm() {
+    return Obx(() => SwitchListTile(
+          value: appController.displayForm.value,
+          onChanged: (value) {
+            appController.displayForm.value = value;
+          },
+          title: WidgetText(
+              data: appController.displayForm.value
+                  ? 'Hint Form'
+                  : 'Display Form'),
+          controlAffinity: ListTileControlAffinity.leading,
+        ));
   }
 
   Row groupButton({required List<AmountMitsuModel> amountMitsuModels}) {
@@ -259,6 +265,7 @@ class _SecondScanState extends State<SecondScan> {
                             ),
                           ],
                         ),
+                        
                       ),
                       const Divider(
                         color: Colors.grey,
@@ -267,6 +274,9 @@ class _SecondScanState extends State<SecondScan> {
                   ),
                 ),
               ),
+              //  const Divider(
+              //           color: Colors.grey,
+              //         ),
               const SizedBox(height: 32),
               groupButton(amountMitsuModels: amountMitsuModels),
             ],
