@@ -40,6 +40,10 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     super.initState();
 
+     AppService()
+        .processFindLocation()
+        .then((value) => print('position --> ${appController.positions.last}'));
+
     AppService().processFindUserLogin();
 
     for (var i = 0; i < bodys.length; i++) {

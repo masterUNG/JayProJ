@@ -230,29 +230,41 @@ class AppService {
     print('##30june result ===> $result');
 
     if (result.toString() == 'null') {
-
-      Get.snackbar('New Code', 'Create New Code to Temp');
-
-      // Without Data --> code จะสร้างข้อมูลใหม่ ตามโค้ดที่ สแกนได้
       var model = await readMitsuData(code: code);
-      amountMitsuModel = AmountMitsuModel(
-        id: '0',
-        code: code,
-        name: model?.name ?? '',
-        qty: '1',
-        userId: mapUserModel['mem_name'],
-        lat: appController.positions.last.latitude.toString(),
-        lng: appController.positions.last.longitude.toString(),
-        status: '0',
-        timestamp: '',
-      );
 
-      String urlApiInsert =
-          'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model?.name ?? ""}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+      if (model == null) {
+        Get.snackbar('No Code', 'No $code in Database',
+            backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
+      } else {
+        // Without Data --> code จะสร้างข้อมูลใหม่ ตามโค้ดที่ สแกนได้
 
-      await dio.Dio().get(urlApiInsert);
+        print('##30june model --> ${model.toMap()}');
 
-      // readAmountMitsuData(code: code);
+        amountMitsuModel = AmountMitsuModel(
+          id: '0',
+          code: code ?? '',
+          name: model.name ?? '',
+          qty: '1',
+          userId: mapUserModel['mem_name'] ?? '',
+          lat: appController.positions.last.latitude.toString() ?? '',
+          lng: appController.positions.last.longitude.toString() ?? '',
+          status: '0',
+          timestamp: '',
+        );
+
+        print('##30june amountMitsuModel ---> ${amountMitsuModel.toMap()}');
+
+        String urlApiInsert =
+            'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+
+        print('##30june urlApiInsert ---> $urlApiInsert');
+
+        await dio.Dio().get(urlApiInsert).then(
+          (value) {
+            Get.snackbar('New Code', 'Create New Code to Temp');
+          },
+        );
+      }
     } else {
       // Have Data --> code
 
