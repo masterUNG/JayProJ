@@ -14,6 +14,8 @@ class WidgetForm extends StatelessWidget {
     this.onSaved,
     this.onFieldSubmitted,
     this.focusNode,
+    this.keyboardType,
+    this.readOnly,
   }) : super(key: key);
 
   final String? hint;
@@ -27,11 +29,24 @@ class WidgetForm extends StatelessWidget {
   final Function(String)? onFieldSubmitted;
   final FocusNode? focusNode;
 
+  final TextInputType? keyboardType;
+
+  final bool? readOnly;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
-      child: TextFormField(focusNode: focusNode,
+      child: TextFormField(
+
+        keyboardType: keyboardType,
+       
+
+        readOnly: readOnly ?? false,
+       
+
+
+        focusNode: focusNode,
         onFieldSubmitted: onFieldSubmitted,
         onSaved: onSaved,
         autofocus: autofocus ?? false,

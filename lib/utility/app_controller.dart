@@ -7,7 +7,6 @@ import 'package:jayproj/models/data_model.dart';
 import 'package:jayproj/models/user_model.dart';
 
 class AppController extends GetxController {
-  
   RxString resultQR = ''.obs;
 
   RxList<DataModel> dataModels = <DataModel>[].obs;
@@ -29,4 +28,6 @@ class AppController extends GetxController {
   RxInt indexBody = 1.obs;
 
   RxList contentWidgets = <Widget>[].obs;
+
+  RxList textInputType = <TextInputType>[TextInputType.none].obs;
 }

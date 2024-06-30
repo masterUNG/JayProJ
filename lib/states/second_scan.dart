@@ -57,11 +57,17 @@ class _SecondScanState extends State<SecondScan> {
           value: appController.displayForm.value,
           onChanged: (value) {
             appController.displayForm.value = value;
+
+            if (value) {
+              appController.textInputType.add(TextInputType.text);
+            } else {
+              appController.textInputType.add(TextInputType.none);
+            }
           },
           title: WidgetText(
               data: appController.displayForm.value
-                  ? 'Hint Form'
-                  : 'Display Form'),
+                  ? 'Hint Keyboard'
+                  : 'Display Keyboard'),
           controlAffinity: ListTileControlAffinity.leading,
         ));
   }
@@ -265,7 +271,6 @@ class _SecondScanState extends State<SecondScan> {
                             ),
                           ],
                         ),
-                        
                       ),
                       const Divider(
                         color: Colors.grey,
@@ -289,49 +294,48 @@ class _SecondScanState extends State<SecondScan> {
   }
 
   Widget codeForm() {
-    return Obx(() => appController.displayForm.value
-        ? Form(
-            key: keyForm,
-            child: WidgetForm(
-              focusNode: focusNode,
-              autofocus: true,
-              textEditingController: textEditingController,
-              validateFunc: (p0) {
-                if (p0?.isEmpty ?? true) {
-                  return 'Please Fill Code';
-                } else {
-                  return null;
-                }
-              },
-              onFieldSubmitted: (p0) async {
+    return Obx(() => Form(
+          key: keyForm,
+          child: WidgetForm(
+            keyboardType: appController.textInputType.last,
+            readOnly: !appController.displayForm.value,
+            focusNode: focusNode,
+            autofocus: true,
+            textEditingController: textEditingController,
+            validateFunc: (p0) {
+              if (p0?.isEmpty ?? true) {
+                return 'Please Fill Code';
+              } else {
+                return null;
+              }
+            },
+            onFieldSubmitted: (p0) async {
+              if (keyForm.currentState!.validate()) {
+                await findResultFromCode(code: textEditingController.text).then(
+                  (value) {
+                    textEditingController.clear();
+                    FocusScope.of(context).requestFocus(focusNode);
+                  },
+                );
+              }
+            },
+            label: 'code :',
+            suffixWidget: WidgetButton(
+              gfButtonType: GFButtonType.outline,
+              label: 'Scan',
+              pressFunc: () async {
                 if (keyForm.currentState!.validate()) {
                   await findResultFromCode(code: textEditingController.text)
                       .then(
                     (value) {
                       textEditingController.clear();
-                      FocusScope.of(context).requestFocus(focusNode);
                     },
                   );
                 }
               },
-              label: 'code :',
-              suffixWidget: WidgetButton(
-                gfButtonType: GFButtonType.outline,
-                label: 'Scan',
-                pressFunc: () async {
-                  if (keyForm.currentState!.validate()) {
-                    await findResultFromCode(code: textEditingController.text)
-                        .then(
-                      (value) {
-                        textEditingController.clear();
-                      },
-                    );
-                  }
-                },
-              ),
             ),
-          )
-        : const SizedBox());
+          ),
+        ));
   }
 
   Row aboutScan() {
@@ -365,7 +369,7 @@ class _SecondScanState extends State<SecondScan> {
                   children: [
                     WidgetText(data: 'code : ${mitsuModel.code}'),
                     SizedBox(
-                      width: 200,
+                      width: Get.width * 0.4,
                       child: WidgetText(data: 'mame : ${mitsuModel.name}'),
                     ),
                     WidgetText(data: 'type : ${mitsuModel.type}'),
