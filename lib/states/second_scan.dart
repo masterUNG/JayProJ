@@ -199,7 +199,8 @@ class _SecondScanState extends State<SecondScan> {
                             Expanded(
                               flex: 1,
                               child: WidgetText(
-                                data: amountMitsuModels[index].id,
+                                // data: amountMitsuModels[index].id,
+                                data: (index +1).toString(),
                                 textStyle: AppConstant().h3Style(
                                     color: AppConstant.colorTexts[int.parse(
                                         amountMitsuModels[index].status)]),
