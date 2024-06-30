@@ -216,7 +216,12 @@ class AppService {
     return mitsuModel;
   }
 
-  Future<AmountMitsuModel?> readAmountMitsuData({required String code}) async {
+  Future<AmountMitsuModel?> readAmountMitsuData({required String code, required bool fromScanIn}) async {
+
+
+  
+
+
     AmountMitsuModel? amountMitsuModel;
 
     var mapUserModel = await GetStorage().read('data');
@@ -242,12 +247,12 @@ class AppService {
 
         amountMitsuModel = AmountMitsuModel(
           id: '0',
-          code: code ?? '',
-          name: model.name ?? '',
+          code: code,
+          name: model.name,
           qty: '1',
           userId: mapUserModel['mem_name'] ?? '',
-          lat: appController.positions.last.latitude.toString() ?? '',
-          lng: appController.positions.last.longitude.toString() ?? '',
+          lat: appController.positions.last.latitude.toString(),
+          lng: appController.positions.last.longitude.toString(),
           status: '0',
           timestamp: '',
         );
@@ -256,12 +261,30 @@ class AppService {
 
         String urlApiInsert =
             'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
+        
+        String urlApiInsertThird =
+            'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsuThird.php?isAdd=true&code=$code&name=${model.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
 
-        print('##30june urlApiInsert ---> $urlApiInsert');
+         String urlInsert = fromScanIn ? urlApiInsert : urlApiInsertThird ;
 
-        await dio.Dio().get(urlApiInsert).then(
-          (value) {
+        await dio.Dio().get(urlInsert).then(
+          (value) async {
             Get.snackbar('New Code', 'Create New Code to Temp');
+
+            // List<String>? result = await GetStorage().read('scanIn');
+
+            // if (result == null) {
+            //   var strings = <String>[];
+            //   strings.add(amountMitsuModel!.code);
+            //   GetStorage().write('scanIn', strings);
+            // } else {
+            //   if (result.contains(amountMitsuModel!.code)) {
+            //   } else {}
+            // }
+
+
+
+
           },
         );
       }
@@ -327,6 +350,7 @@ class AppService {
       await dio.Dio().get(urlAPI);
     }
   }
+
   Future<void> processSaveOut(
       {required List<AmountMitsuModel> amountMitsuModels}) async {
     for (var element in amountMitsuModels) {

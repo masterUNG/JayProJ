@@ -390,7 +390,7 @@ class _SecondScanState extends State<SecondScan> {
     appController.resultQR.value = code.toUpperCase().toString();
 
     AmountMitsuModel? amountMitsuModel = await AppService()
-        .readAmountMitsuData(code: appController.resultQR.value);
+        .readAmountMitsuData(code: appController.resultQR.value, fromScanIn: true);
 
     appController.contentWidgets.add(WidgetText(data: amountMitsuModel!.name));
     setState(() {});
