@@ -301,6 +301,13 @@ class _SecondScanState extends State<SecondScan> {
     return Obx(() => Form(
           key: keyForm,
           child: WidgetForm(
+            onChanged: (p0) async {
+              print('##7july p0 ---> $p0');
+
+              appController.displayForm.value = false;
+
+              await findResultFromCode(code: p0);
+            },
             keyboardType: appController.textInputType.last,
             readOnly: !appController.displayForm.value,
             focusNode: focusNode,
@@ -315,7 +322,6 @@ class _SecondScanState extends State<SecondScan> {
             },
             onFieldSubmitted: (p0) async {
               if (keyForm.currentState!.validate()) {
-                
                 String string = textEditingController.text;
 
                 textEditingController.clear();
@@ -401,6 +407,11 @@ class _SecondScanState extends State<SecondScan> {
         code: appController.resultQR.value, fromScanIn: true);
 
     appController.contentWidgets.add(WidgetText(data: amountMitsuModel!.name));
+
+    //for test
+    textEditingController.clear();
+    appController.displayForm.value = true;
+
     setState(() {});
   }
 }
