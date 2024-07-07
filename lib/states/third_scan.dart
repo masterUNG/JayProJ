@@ -91,7 +91,7 @@ class _ThirdScanState extends State<ThirdScan> {
                         .then(
                       (value) async {
                         AppService()
-                            .processCancel(amountMitsuModels: amountMitsuModels)
+                            .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: false)
                             .then(
                           (value) {
                             Get.back();
@@ -115,7 +115,7 @@ class _ThirdScanState extends State<ThirdScan> {
                   label: 'Confirm',
                   pressFunc: () {
                     AppService()
-                        .processCancel(amountMitsuModels: amountMitsuModels)
+                        .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: false)
                         .then(
                       (value) {
                         Get.back();
@@ -182,7 +182,7 @@ class _ThirdScanState extends State<ThirdScan> {
 
                           print('##30june you delete id --> $id');
 
-                          AppService().processDeleteById(id: id).then(
+                          AppService().processDeleteById(id: id, fromScanIn: false).then(
                             (value) {
                               setState(() {});
                             },

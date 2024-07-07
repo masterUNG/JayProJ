@@ -216,12 +216,8 @@ class AppService {
     return mitsuModel;
   }
 
-  Future<AmountMitsuModel?> readAmountMitsuData({required String code, required bool fromScanIn}) async {
-
-
-  
-
-
+  Future<AmountMitsuModel?> readAmountMitsuData(
+      {required String code, required bool fromScanIn}) async {
     AmountMitsuModel? amountMitsuModel;
 
     var mapUserModel = await GetStorage().read('data');
@@ -232,13 +228,9 @@ class AppService {
     String urlApiForThird =
         'https://www.androidthai.in.th/fluttertraining/JayProJ/getAmountMitsuWhereCodeForThird.php?isAdd=true&code=$code&userId=${mapUserModel["mem_name"]}';
 
-
-       String url = fromScanIn ? urlApi : urlApiForThird ;
-   
+    String url = fromScanIn ? urlApi : urlApiForThird;
 
     var result = await dio.Dio().get(url);
-
-    
 
     if (result.toString() == 'null') {
       var model = await readMitsuData(code: code);
@@ -267,11 +259,11 @@ class AppService {
 
         String urlApiInsert =
             'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsu.php?isAdd=true&code=$code&name=${model.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
-        
+
         String urlApiInsertThird =
             'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsuThird.php?isAdd=true&code=$code&name=${model.name}&qty=1&userId=${mapUserModel["mem_name"]}&lat=${appController.positions.last.latitude}&lng=${appController.positions.last.longitude}';
 
-         String urlInsert = fromScanIn ? urlApiInsert : urlApiInsertThird ;
+        String urlInsert = fromScanIn ? urlApiInsert : urlApiInsertThird;
 
         await dio.Dio().get(urlInsert).then(
           (value) async {
@@ -287,10 +279,6 @@ class AppService {
             //   if (result.contains(amountMitsuModel!.code)) {
             //   } else {}
             // }
-
-
-
-
           },
         );
       }
@@ -313,11 +301,7 @@ class AppService {
         String urlApiEditQtyForThird =
             'https://www.androidthai.in.th/fluttertraining/JayProJ/editQtyWhereIdForThird.php?isAdd=true&id=${model.id}&qty=${map["qty"]}';
 
-
-
-         String urlEdit = fromScanIn ? urlApiEditQty : urlApiEditQtyForThird ;
-
-
+        String urlEdit = fromScanIn ? urlApiEditQty : urlApiEditQtyForThird;
 
         await dio.Dio().get(urlEdit);
 
@@ -348,7 +332,9 @@ class AppService {
     }
     return amountMitsuModels;
   }
-  Future<List<AmountMitsuModel>> readAmountMitsuDataWhereLoginforThirdScan() async {
+
+  Future<List<AmountMitsuModel>>
+      readAmountMitsuDataWhereLoginforThirdScan() async {
     var amountMitsuModels = <AmountMitsuModel>[];
     var mapUserModel = await GetStorage().read('data');
 
@@ -399,19 +385,31 @@ class AppService {
   }
 
   Future<void> processCancel(
-      {required List<AmountMitsuModel> amountMitsuModels}) async {
+      {required List<AmountMitsuModel> amountMitsuModels,
+      required bool fromScanIn}) async {
     for (var element in amountMitsuModels) {
       String urlAPI =
           'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereId.php?isAdd=true&id=${element.id}';
 
-      await dio.Dio().get(urlAPI);
+      String urlAPIForThird =
+          'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereIdForThird.php?isAdd=true&id=${element.id}';
+
+      String url = fromScanIn ? urlAPI : urlAPIForThird;
+
+      await dio.Dio().get(url);
     }
   }
 
-  Future<void> processDeleteById({required String id}) async {
+  Future<void> processDeleteById(
+      {required String id, required bool fromScanIn}) async {
     String urlAPI =
         'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereId.php?isAdd=true&id=$id';
 
-    await dio.Dio().get(urlAPI);
+    String urlAPIForThird =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/deleteWhereIdForThird.php?isAdd=true&id=$id';
+
+    String url = fromScanIn ? urlAPI : urlAPIForThird;
+
+    await dio.Dio().get(url);
   }
 }

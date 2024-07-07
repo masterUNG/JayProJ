@@ -90,7 +90,7 @@ class _SecondScanState extends State<SecondScan> {
                         .then(
                       (value) async {
                         AppService()
-                            .processCancel(amountMitsuModels: amountMitsuModels)
+                            .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: true)
                             .then(
                           (value) {
                             Get.back();
@@ -114,7 +114,7 @@ class _SecondScanState extends State<SecondScan> {
                   label: 'Confirm',
                   pressFunc: () {
                     AppService()
-                        .processCancel(amountMitsuModels: amountMitsuModels)
+                        .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: true)
                         .then(
                       (value) {
                         Get.back();
@@ -181,7 +181,7 @@ class _SecondScanState extends State<SecondScan> {
 
                           print('##30june you delete id --> $id');
 
-                          AppService().processDeleteById(id: id).then(
+                          AppService().processDeleteById(id: id, fromScanIn: true).then(
                             (value) {
                               setState(() {});
                             },
