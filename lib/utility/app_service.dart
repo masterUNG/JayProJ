@@ -357,12 +357,19 @@ class AppService {
   }
 
   Future<void> processUpdateStatus(
-      {required String id, required String newStatus}) async {
+      {required String id, required String newStatus, required bool fromScanIn}) async {
     String urlAPI =
         'https://www.androidthai.in.th/fluttertraining/JayProJ/editStatusWhereId.php?isAdd=true&id=$id&status=$newStatus';
+    
+    String urlAPIForThird =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/editStatusWhereIdForThird.php?isAdd=true&id=$id&status=$newStatus';
 
-    await dio.Dio().get(urlAPI);
+        String url = fromScanIn ?  urlAPI : urlAPIForThird  ;
+
+    await dio.Dio().get(url);
   }
+
+  
 
   Future<void> processSave(
       {required List<AmountMitsuModel> amountMitsuModels}) async {
@@ -370,6 +377,7 @@ class AppService {
       String urlAPI =
           'https://www.androidthai.in.th/fluttertraining/JayProJ/insertAmountMitsuAll.php?isAdd=true&code=${element.code}&name=${element.name}&qty=${element.qty}&userId=${element.userId}&lat=${element.lat}&lng=${element.lng}&status=${element.status}&timestamp=${element.timestamp}';
 
+     
       await dio.Dio().get(urlAPI);
     }
   }

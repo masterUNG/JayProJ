@@ -207,7 +207,7 @@ class _SecondScanState extends State<SecondScan> {
                           print('newStatus ===> $newStatus');
 
                           AppService()
-                              .processUpdateStatus(id: id, newStatus: newStatus)
+                              .processUpdateStatus(id: id, newStatus: newStatus, fromScanIn: true)
                               .then(
                             (value) {
                               setState(() {});

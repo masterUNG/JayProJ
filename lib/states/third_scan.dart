@@ -208,7 +208,7 @@ class _ThirdScanState extends State<ThirdScan> {
                           print('newStatus ===> $newStatus');
 
                           AppService()
-                              .processUpdateStatus(id: id, newStatus: newStatus)
+                              .processUpdateStatus(id: id, newStatus: newStatus, fromScanIn: false)
                               .then(
                             (value) {
                               setState(() {});
