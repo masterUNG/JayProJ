@@ -18,10 +18,9 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 				
-		
-		$userId = $_GET['userId'];
+		$code = $_GET['code'];
 
-		$result = mysqli_query($link, "SELECT * FROM tbl_amount_mitsu_third WHERE userId = '$userId'");
+		$result = mysqli_query($link, "SELECT * FROM tbl_amount_mitsu_third WHERE code = '$code'");
 
 		if ($result) {
 

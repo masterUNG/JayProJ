@@ -15,29 +15,27 @@ if (!$link->set_charset("utf8")) {
     exit();
 	}
 
+
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
-				
-		
-		$userId = $_GET['userId'];
+			
+		$id = $_GET['id'];
 
-		$result = mysqli_query($link, "SELECT * FROM tbl_amount_mitsu_third WHERE userId = '$userId'");
+		$qty = $_GET['qty'];		
+							
+		$sql = "UPDATE `tbl_amount_mitsu_third` SET `qty` = '$qty' WHERE id = '$id'";
+
+		$result = mysqli_query($link, $sql);
 
 		if ($result) {
+			echo "true";
+		} else {
+			echo "false";
+		}
 
-			while($row=mysqli_fetch_assoc($result)){
-			$output[]=$row;
-
-			}	// while
-
-			echo json_encode($output);
-
-		} //if
-
-	} else echo "Welcome Master UNG";	// if2
+	} else echo "Welcome Master UNG";
    
-}	// if1
-
+}
 
 	mysqli_close($link);
 ?>

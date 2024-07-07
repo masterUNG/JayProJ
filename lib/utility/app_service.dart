@@ -229,10 +229,16 @@ class AppService {
     String urlApi =
         'https://www.androidthai.in.th/fluttertraining/JayProJ/getAmountMitsuWhereCode.php?isAdd=true&code=$code&userId=${mapUserModel["mem_name"]}';
 
-    var result = await dio.Dio().get(urlApi);
+    String urlApiForThird =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/getAmountMitsuWhereCodeForThird.php?isAdd=true&code=$code&userId=${mapUserModel["mem_name"]}';
 
-    print('##30june urlAPI ===> $urlApi');
-    print('##30june result ===> $result');
+
+       String url = fromScanIn ? urlApi : urlApiForThird ;
+   
+
+    var result = await dio.Dio().get(url);
+
+    
 
     if (result.toString() == 'null') {
       var model = await readMitsuData(code: code);
@@ -303,7 +309,17 @@ class AppService {
 
         String urlApiEditQty =
             'https://www.androidthai.in.th/fluttertraining/JayProJ/editQtyWhereId.php?isAdd=true&id=${model.id}&qty=${map["qty"]}';
-        await dio.Dio().get(urlApiEditQty);
+
+        String urlApiEditQtyForThird =
+            'https://www.androidthai.in.th/fluttertraining/JayProJ/editQtyWhereIdForThird.php?isAdd=true&id=${model.id}&qty=${map["qty"]}';
+
+
+
+         String urlEdit = fromScanIn ? urlApiEditQty : urlApiEditQtyForThird ;
+
+
+
+        await dio.Dio().get(urlEdit);
 
         amountMitsuModel = AmountMitsuModel.fromMap(map);
       }
