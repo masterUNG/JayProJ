@@ -13,7 +13,7 @@ class WidgetSighOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WidgetButton(
+    return WidgetButton(color: GFColors.WHITE,
       label: 'Sign Out',
       pressFunc: () {
         AppDialog().normalDialog(

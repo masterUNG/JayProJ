@@ -41,7 +41,7 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     super.initState();
 
-     AppService()
+    AppService()
         .processFindLocation()
         .then((value) => print('position --> ${appController.positions.last}'));
 
@@ -64,6 +64,8 @@ class _MainHomeState extends State<MainHome> {
       builder: (AppController appController) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: AppConstant.appBarColors[appController.indexBody.value],
+            foregroundColor: Colors.white,
             title: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -105,11 +107,11 @@ class _MainHomeState extends State<MainHome> {
               children: [
                 WidgetText(
                   data: 'สวัสดี คุณ ',
-                  textStyle: AppConstant().h3Style(color: GFColors.PRIMARY),
+                  textStyle: AppConstant().h3Style(color: GFColors.WHITE),
                 ),
                 WidgetText(
                   data: appController.currentUserModels.last.mem_name,
-                  textStyle: AppConstant().h3Style(color: Colors.purple),
+                  textStyle: AppConstant().h3Style(color: GFColors.WHITE),
                 ),
               ],
             ),

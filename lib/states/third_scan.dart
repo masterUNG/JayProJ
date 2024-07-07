@@ -14,6 +14,7 @@ import 'package:jayproj/utility/app_service.dart';
 import 'package:jayproj/widgets/widget_button.dart';
 import 'package:jayproj/widgets/widget_button_scan.dart';
 import 'package:jayproj/widgets/widget_form.dart';
+import 'package:jayproj/widgets/widget_head.dart';
 import 'package:jayproj/widgets/widget_text.dart';
 
 class ThirdScan extends StatefulWidget {
@@ -76,7 +77,8 @@ class _ThirdScanState extends State<ThirdScan> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        WidgetButton(color: GFColors.DANGER,
+        WidgetButton(
+          color: GFColors.DANGER,
           label: 'Save Out',
           pressFunc: () {
             AppDialog().normalDialog(
@@ -85,13 +87,14 @@ class _ThirdScanState extends State<ThirdScan> {
                 firstWidget: WidgetButton(
                   label: 'Confirm',
                   pressFunc: () {
-
                     AppService()
                         .processSaveOut(amountMitsuModels: amountMitsuModels)
                         .then(
                       (value) async {
                         AppService()
-                            .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: false)
+                            .processCancel(
+                                amountMitsuModels: amountMitsuModels,
+                                fromScanIn: false)
                             .then(
                           (value) {
                             Get.back();
@@ -115,7 +118,9 @@ class _ThirdScanState extends State<ThirdScan> {
                   label: 'Confirm',
                   pressFunc: () {
                     AppService()
-                        .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: false)
+                        .processCancel(
+                            amountMitsuModels: amountMitsuModels,
+                            fromScanIn: false)
                         .then(
                       (value) {
                         Get.back();
@@ -143,26 +148,7 @@ class _ThirdScanState extends State<ThirdScan> {
               const Divider(
                 color: Colors.grey,
               ),
-              const Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: WidgetText(data: 'No:'),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: WidgetText(data: 'Code'),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: WidgetText(data: 'Name'),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: WidgetText(data: 'QTY'),
-                  ),
-                ],
-              ),
+               WidgetHead(color: AppConstant.appBarColors[1],),
               const Divider(
                 color: Colors.grey,
               ),
@@ -182,7 +168,9 @@ class _ThirdScanState extends State<ThirdScan> {
 
                           print('##30june you delete id --> $id');
 
-                          AppService().processDeleteById(id: id, fromScanIn: false).then(
+                          AppService()
+                              .processDeleteById(id: id, fromScanIn: false)
+                              .then(
                             (value) {
                               setState(() {});
                             },
@@ -208,7 +196,10 @@ class _ThirdScanState extends State<ThirdScan> {
                           print('newStatus ===> $newStatus');
 
                           AppService()
-                              .processUpdateStatus(id: id, newStatus: newStatus, fromScanIn: false)
+                              .processUpdateStatus(
+                                  id: id,
+                                  newStatus: newStatus,
+                                  fromScanIn: false)
                               .then(
                             (value) {
                               setState(() {});
@@ -235,12 +226,23 @@ class _ThirdScanState extends State<ThirdScan> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: WidgetText(
-                                // data: amountMitsuModels[index].id,
-                                data: (index + 1).toString(),
-                                textStyle: AppConstant().h3Style(
-                                    color: AppConstant.colorTexts[int.parse(
-                                        amountMitsuModels[index].status)]),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    decoration: BoxDecoration(
+                                        color: Colors.pink.shade300),
+                                    child: WidgetText(
+                                      data: amountMitsuModels[index].qty,
+                                      textStyle: AppConstant().h3Style(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppConstant.colorTexts[
+                                              int.parse(amountMitsuModels[index]
+                                                  .status)]),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(
@@ -264,7 +266,8 @@ class _ThirdScanState extends State<ThirdScan> {
                             Expanded(
                               flex: 1,
                               child: WidgetText(
-                                data: amountMitsuModels[index].qty,
+                                // data: amountMitsuModels[index].id,
+                                data: (index + 1).toString(),
                                 textStyle: AppConstant().h3Style(
                                     color: AppConstant.colorTexts[int.parse(
                                         amountMitsuModels[index].status)]),
@@ -390,8 +393,8 @@ class _ThirdScanState extends State<ThirdScan> {
   Future<void> findResultFromCode({required String code}) async {
     appController.resultQR.value = code.toUpperCase().toString();
 
-    AmountMitsuModel? amountMitsuModel = await AppService()
-        .readAmountMitsuData(code: appController.resultQR.value, fromScanIn: false);
+    AmountMitsuModel? amountMitsuModel = await AppService().readAmountMitsuData(
+        code: appController.resultQR.value, fromScanIn: false);
 
     appController.contentWidgets.add(WidgetText(data: amountMitsuModel!.name));
     setState(() {});

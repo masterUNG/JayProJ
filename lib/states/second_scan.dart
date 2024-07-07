@@ -14,6 +14,7 @@ import 'package:jayproj/utility/app_service.dart';
 import 'package:jayproj/widgets/widget_button.dart';
 import 'package:jayproj/widgets/widget_button_scan.dart';
 import 'package:jayproj/widgets/widget_form.dart';
+import 'package:jayproj/widgets/widget_head.dart';
 import 'package:jayproj/widgets/widget_text.dart';
 
 class SecondScan extends StatefulWidget {
@@ -90,7 +91,9 @@ class _SecondScanState extends State<SecondScan> {
                         .then(
                       (value) async {
                         AppService()
-                            .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: true)
+                            .processCancel(
+                                amountMitsuModels: amountMitsuModels,
+                                fromScanIn: true)
                             .then(
                           (value) {
                             Get.back();
@@ -114,7 +117,9 @@ class _SecondScanState extends State<SecondScan> {
                   label: 'Confirm',
                   pressFunc: () {
                     AppService()
-                        .processCancel(amountMitsuModels: amountMitsuModels, fromScanIn: true)
+                        .processCancel(
+                            amountMitsuModels: amountMitsuModels,
+                            fromScanIn: true)
                         .then(
                       (value) {
                         Get.back();
@@ -142,26 +147,7 @@ class _SecondScanState extends State<SecondScan> {
               const Divider(
                 color: Colors.grey,
               ),
-              const Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: WidgetText(data: 'No:'),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: WidgetText(data: 'Code'),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: WidgetText(data: 'Name'),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: WidgetText(data: 'QTY'),
-                  ),
-                ],
-              ),
+               WidgetHead(color: AppConstant.appBarColors[0],),
               const Divider(
                 color: Colors.grey,
               ),
@@ -181,7 +167,9 @@ class _SecondScanState extends State<SecondScan> {
 
                           print('##30june you delete id --> $id');
 
-                          AppService().processDeleteById(id: id, fromScanIn: true).then(
+                          AppService()
+                              .processDeleteById(id: id, fromScanIn: true)
+                              .then(
                             (value) {
                               setState(() {});
                             },
@@ -207,7 +195,10 @@ class _SecondScanState extends State<SecondScan> {
                           print('newStatus ===> $newStatus');
 
                           AppService()
-                              .processUpdateStatus(id: id, newStatus: newStatus, fromScanIn: true)
+                              .processUpdateStatus(
+                                  id: id,
+                                  newStatus: newStatus,
+                                  fromScanIn: true)
                               .then(
                             (value) {
                               setState(() {});
@@ -234,12 +225,23 @@ class _SecondScanState extends State<SecondScan> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: WidgetText(
-                                // data: amountMitsuModels[index].id,
-                                data: (index + 1).toString(),
-                                textStyle: AppConstant().h3Style(
-                                    color: AppConstant.colorTexts[int.parse(
-                                        amountMitsuModels[index].status)]),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    decoration: BoxDecoration(
+                                        color: Colors.pink.shade300),
+                                    child: WidgetText(
+                                      data: amountMitsuModels[index].qty,
+                                      textStyle: AppConstant().h3Style(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppConstant.colorTexts[
+                                              int.parse(amountMitsuModels[index]
+                                                  .status)]),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(
@@ -263,7 +265,7 @@ class _SecondScanState extends State<SecondScan> {
                             Expanded(
                               flex: 1,
                               child: WidgetText(
-                                data: amountMitsuModels[index].qty,
+                                data: (index + 1).toString(),
                                 textStyle: AppConstant().h3Style(
                                     color: AppConstant.colorTexts[int.parse(
                                         amountMitsuModels[index].status)]),
@@ -389,8 +391,8 @@ class _SecondScanState extends State<SecondScan> {
   Future<void> findResultFromCode({required String code}) async {
     appController.resultQR.value = code.toUpperCase().toString();
 
-    AmountMitsuModel? amountMitsuModel = await AppService()
-        .readAmountMitsuData(code: appController.resultQR.value, fromScanIn: true);
+    AmountMitsuModel? amountMitsuModel = await AppService().readAmountMitsuData(
+        code: appController.resultQR.value, fromScanIn: true);
 
     appController.contentWidgets.add(WidgetText(data: amountMitsuModel!.name));
     setState(() {});

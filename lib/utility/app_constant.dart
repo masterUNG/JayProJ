@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
 class AppConstant {
+  static var appBarColors = <Color>[
+    Colors.blue.shade700,
+    Colors.pink.shade700,
+  ];
+
   static Color appColor = const Color.fromARGB(255, 143, 164, 8);
 
-  static var titleSlids = <String>['Off', 'On',];
+  static var titleSlids = <String>[
+    'Off',
+    'On',
+  ];
 
   static var colors = <Color>[GFColors.DANGER, Colors.green.shade700];
   static var colorTexts = <Color>[Colors.black, Colors.white];
