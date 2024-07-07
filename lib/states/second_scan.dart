@@ -147,7 +147,9 @@ class _SecondScanState extends State<SecondScan> {
               const Divider(
                 color: Colors.grey,
               ),
-               WidgetHead(color: AppConstant.appBarColors[0],),
+              WidgetHead(
+                color: AppConstant.appBarColors[0],
+              ),
               const Divider(
                 color: Colors.grey,
               ),
@@ -313,9 +315,13 @@ class _SecondScanState extends State<SecondScan> {
             },
             onFieldSubmitted: (p0) async {
               if (keyForm.currentState!.validate()) {
-                await findResultFromCode(code: textEditingController.text).then(
+                
+                String string = textEditingController.text;
+
+                textEditingController.clear();
+
+                await findResultFromCode(code: string).then(
                   (value) {
-                    textEditingController.clear();
                     FocusScope.of(context).requestFocus(focusNode);
                   },
                 );
