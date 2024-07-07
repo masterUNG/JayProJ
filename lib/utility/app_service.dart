@@ -332,6 +332,27 @@ class AppService {
     }
     return amountMitsuModels;
   }
+  Future<List<AmountMitsuModel>> readAmountMitsuDataWhereLoginforThirdScan() async {
+    var amountMitsuModels = <AmountMitsuModel>[];
+    var mapUserModel = await GetStorage().read('data');
+
+    String urlApi =
+        'https://www.androidthai.in.th/fluttertraining/JayProJ/getAmountMitsuWhereLoginForThirdScan.php?isAdd=true&userId=${mapUserModel["mem_name"]}';
+
+    print('##24may urlAPI ---> $urlApi');
+
+    var result = await dio.Dio().get(urlApi);
+
+    print('##24may result ======> $result');
+
+    if (result.toString() != 'null') {
+      for (var element in json.decode(result.data)) {
+        AmountMitsuModel amountMitsuModel = AmountMitsuModel.fromMap(element);
+        amountMitsuModels.add(amountMitsuModel);
+      }
+    }
+    return amountMitsuModels;
+  }
 
   Future<void> processUpdateStatus(
       {required String id, required String newStatus}) async {

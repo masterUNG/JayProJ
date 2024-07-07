@@ -132,7 +132,7 @@ class _ThirdScanState extends State<ThirdScan> {
 
   FutureBuilder<List<AmountMitsuModel>> listViewResult() {
     return FutureBuilder(
-      future: AppService().readAmountMitsuDataWhereLogin(),
+      future: AppService().readAmountMitsuDataWhereLoginforThirdScan(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<AmountMitsuModel> amountMitsuModels = snapshot.data!;
