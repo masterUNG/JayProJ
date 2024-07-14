@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:jayproj/states/authen.dart';
 import 'package:jayproj/states/main_home.dart';
 import 'package:jayproj/states/main_scan.dart';
+import 'package:jayproj/states/test_from.dart';
 import 'package:jayproj/states/welcome.dart';
 
 String? initialRoute;
@@ -27,7 +28,8 @@ var getPages = <GetPage<dynamic>>[
   ),
   GetPage(
     name: '/mainHome',
-    page: () => const MainHome(),
+    page: () => const TestForm(),
+    // page: () => const MainHome(),
   ),
 ];
 

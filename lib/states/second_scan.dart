@@ -324,6 +324,8 @@ class _SecondScanState extends State<SecondScan> {
           child: WidgetForm(
             onChanged: (p0) async {
               print('##14july p0 ---> $p0');
+
+              delayHindKeyboard();
             },
             keyboardType: appController.textInputType.last,
             readOnly: appController.indexDevices.last == 0
