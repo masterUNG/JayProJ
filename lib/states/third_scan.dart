@@ -54,7 +54,7 @@ class _ThirdScanState extends State<ThirdScan> {
   }
 
   Obx switchDisplayForm() {
-    return Obx(() => SwitchListTile(
+    return Obx(() => appController.indexDevices.last == 1 ? const SizedBox() : SwitchListTile(
           value: appController.displayForm.value,
           onChanged: (value) {
             appController.displayForm.value = value;

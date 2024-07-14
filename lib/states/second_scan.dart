@@ -42,7 +42,7 @@ class _SecondScanState extends State<SecondScan> {
           children: [
             aboutScan(),
             const SizedBox(height: 32),
-            switchDisplayForm(),
+             switchDisplayForm(),
             codeForm(),
             const SizedBox(height: 32),
             listViewResult(),
@@ -54,7 +54,7 @@ class _SecondScanState extends State<SecondScan> {
   }
 
   Obx switchDisplayForm() {
-    return Obx(() => SwitchListTile(
+    return Obx(() => appController.indexDevices.last == 1 ? const SizedBox() : SwitchListTile(
           value: appController.displayForm.value,
           onChanged: (value) {
             appController.displayForm.value = value;
