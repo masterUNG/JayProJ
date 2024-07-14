@@ -304,13 +304,14 @@ class _SecondScanState extends State<SecondScan> {
           key: keyForm,
           child: WidgetForm(
             onChanged: (p0) async {
-              // appController.displayForm.value = false;
-
-              // await findResultFromCode(code: p0);
+              print('##14july p0 ---> $p0');
             },
             keyboardType: appController.textInputType.last,
-            readOnly: !appController.displayForm.value,
+
+            readOnly: appController.indexDevices.last == 0 ? !appController.displayForm.value : false,
             focusNode: focusNode,
+
+
             autofocus: true,
             textEditingController: textEditingController,
             validateFunc: (p0) {
@@ -409,8 +410,8 @@ class _SecondScanState extends State<SecondScan> {
     appController.contentWidgets.add(WidgetText(data: amountMitsuModel!.name));
 
     //for test
-    textEditingController.clear();
-    appController.displayForm.value = true;
+    // textEditingController.clear();
+    // appController.displayForm.value = true;
 
     setState(() {});
   }
