@@ -42,7 +42,7 @@ class _SecondScanState extends State<SecondScan> {
           children: [
             aboutScan(),
             const SizedBox(height: 32),
-             switchDisplayForm(),
+            switchDisplayForm(),
             codeForm(),
             const SizedBox(height: 32),
             listViewResult(),
@@ -54,23 +54,25 @@ class _SecondScanState extends State<SecondScan> {
   }
 
   Obx switchDisplayForm() {
-    return Obx(() => appController.indexDevices.last == 1 ? const SizedBox() : SwitchListTile(
-          value: appController.displayForm.value,
-          onChanged: (value) {
-            appController.displayForm.value = value;
+    return Obx(() => appController.indexDevices.last == 1
+        ? const SizedBox()
+        : SwitchListTile(
+            value: appController.displayForm.value,
+            onChanged: (value) {
+              appController.displayForm.value = value;
 
-            if (value) {
-              appController.textInputType.add(TextInputType.text);
-            } else {
-              appController.textInputType.add(TextInputType.none);
-            }
-          },
-          title: WidgetText(
-              data: appController.displayForm.value
-                  ? 'Hint Keyboard'
-                  : 'Display Keyboard'),
-          controlAffinity: ListTileControlAffinity.leading,
-        ));
+              if (value) {
+                appController.textInputType.add(TextInputType.text);
+              } else {
+                appController.textInputType.add(TextInputType.none);
+              }
+            },
+            title: WidgetText(
+                data: appController.displayForm.value
+                    ? 'Hint Keyboard'
+                    : 'Display Keyboard'),
+            controlAffinity: ListTileControlAffinity.leading,
+          ));
   }
 
   Row groupButton({required List<AmountMitsuModel> amountMitsuModels}) {
@@ -302,11 +304,9 @@ class _SecondScanState extends State<SecondScan> {
           key: keyForm,
           child: WidgetForm(
             onChanged: (p0) async {
-              print('##7july p0 ---> $p0');
+              // appController.displayForm.value = false;
 
-              appController.displayForm.value = false;
-
-              await findResultFromCode(code: p0);
+              // await findResultFromCode(code: p0);
             },
             keyboardType: appController.textInputType.last,
             readOnly: !appController.displayForm.value,
