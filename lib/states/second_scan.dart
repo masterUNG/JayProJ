@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -31,6 +32,15 @@ class _SecondScanState extends State<SecondScan> {
   TextEditingController textEditingController = TextEditingController();
 
   FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(microseconds: 300), () {
+      SystemChannels.textInput.invokeListMethod('TextInput.hide');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -307,11 +317,10 @@ class _SecondScanState extends State<SecondScan> {
               print('##14july p0 ---> $p0');
             },
             keyboardType: appController.textInputType.last,
-
-            readOnly: appController.indexDevices.last == 0 ? !appController.displayForm.value : false,
+            readOnly: appController.indexDevices.last == 0
+                ? !appController.displayForm.value
+                : false,
             focusNode: focusNode,
-
-
             autofocus: true,
             textEditingController: textEditingController,
             validateFunc: (p0) {
