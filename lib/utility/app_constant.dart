@@ -9,6 +9,11 @@ class AppConstant {
 
   static Color appColor = const Color.fromARGB(255, 143, 164, 8);
 
+  static var nameDevice = <String>[
+    'Mobile',
+    'Reader',
+  ];
+
   static var titleSlids = <String>[
     'Off',
     'On',

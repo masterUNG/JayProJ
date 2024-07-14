@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:jayproj/states/main_scan.dart';
 import 'package:jayproj/states/second_scan.dart';
 import 'package:jayproj/states/third_scan.dart';
 import 'package:jayproj/utility/app_constant.dart';
 import 'package:jayproj/utility/app_controller.dart';
+import 'package:jayproj/utility/app_dialog.dart';
 import 'package:jayproj/utility/app_service.dart';
+import 'package:jayproj/widgets/widget_button.dart';
+import 'package:jayproj/widgets/widget_icon_button.dart';
 import 'package:jayproj/widgets/widget_sign_out.dart';
 import 'package:jayproj/widgets/widget_text.dart';
 
@@ -41,6 +45,11 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     super.initState();
 
+    var indexDevice = GetStorage().read('indexDevice');
+    if (indexDevice != null) {
+      appController.indexDevices.add(indexDevice);
+    }
+
     AppService()
         .processFindLocation()
         .then((value) => print('position --> ${appController.positions.last}'));
@@ -64,7 +73,8 @@ class _MainHomeState extends State<MainHome> {
       builder: (AppController appController) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppConstant.appBarColors[appController.indexBody.value],
+            backgroundColor:
+                AppConstant.appBarColors[appController.indexBody.value],
             foregroundColor: Colors.white,
             title: Row(
               mainAxisSize: MainAxisSize.min,
@@ -82,6 +92,64 @@ class _MainHomeState extends State<MainHome> {
               Container(
                 margin: const EdgeInsets.only(right: 16),
                 child: const WidgetSighOut(),
+              ),
+              WidgetIconButton(
+                color: GFColors.WHITE,
+                iconData: Icons.settings_outlined,
+                pressFunc: () {
+                  AppDialog().normalDialog(
+                      title: 'Setting',
+                      contentWidget: GetX<AppController>(
+                        init: AppController(),
+                        initState: (_) {},
+                        builder: (AppController controller) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const WidgetText(data: 'Choose Decice'),
+                              RadioListTile(
+                                value: 0,
+                                groupValue: controller.indexDevices.last,
+                                onChanged: (value) {
+                                  controller.indexDevices.add(value);
+                                },
+                                title:
+                                    WidgetText(data: AppConstant.nameDevice[0]),
+                              ),
+                              RadioListTile(
+                                value: 1,
+                                groupValue: controller.indexDevices.last,
+                                onChanged: (value) {
+                                  controller.indexDevices.add(value);
+                                },
+                                title:
+                                    WidgetText(data: AppConstant.nameDevice[1]),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      firstWidget: WidgetButton(
+                        gfButtonType: GFButtonType.outline2x,
+                        label: 'Save',
+                        pressFunc: () async {
+                          int? indexDevice = appController.indexDevices.last;
+
+                          if (indexDevice != null) {
+                            await GetStorage()
+                                .write('indexDevice', indexDevice)
+                                .then(
+                              (value) {
+                                Get.back();
+                                Get.snackbar('Save Setting',
+                                    'Your Device is ${AppConstant.nameDevice[appController.indexDevices.last!]}');
+                              },
+                            );
+                          }
+                        },
+                      ));
+                },
               )
             ],
           ),
