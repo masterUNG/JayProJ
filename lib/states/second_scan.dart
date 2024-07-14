@@ -37,8 +37,15 @@ class _SecondScanState extends State<SecondScan> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(microseconds: 300), () {
-      SystemChannels.textInput.invokeListMethod('TextInput.hide');
+    delayHindKeyboard();
+  }
+
+  Future<void> delayHindKeyboard() async {
+    print('##14july delayHindKeyboard Work');
+
+    Future.delayed(const Duration(seconds: 3), () {
+      // SystemChannels.textInput.invokeListMethod('TextInput.hide');
+      FocusManager.instance.primaryFocus!.unfocus();
     });
   }
 
@@ -46,7 +53,7 @@ class _SecondScanState extends State<SecondScan> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        // onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           children: [
@@ -73,6 +80,8 @@ class _SecondScanState extends State<SecondScan> {
 
               if (value) {
                 appController.textInputType.add(TextInputType.text);
+
+                delayHindKeyboard();
               } else {
                 appController.textInputType.add(TextInputType.none);
               }
