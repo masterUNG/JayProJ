@@ -28,8 +28,8 @@ var getPages = <GetPage<dynamic>>[
   ),
   GetPage(
     name: '/mainHome',
-    page: () => const TestForm(),
-    // page: () => const MainHome(),
+    // page: () => const TestForm(),
+    page: () => const MainHome(),
   ),
 ];
 
@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       getPages: getPages,
       initialRoute: initialRoute,
+      // initialRoute: '/authen',
       theme: ThemeData(useMaterial3: true),
     );
   }

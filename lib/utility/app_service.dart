@@ -21,6 +21,8 @@ import 'package:jayproj/utility/app_dialog.dart';
 import 'package:jayproj/widgets/widget_button.dart';
 import 'package:jayproj/widgets/widget_text.dart';
 
+import 'package:http/http.dart' as http;
+
 class AppService {
   AppController appController = Get.put(AppController());
 
@@ -157,39 +159,47 @@ class AppService {
     required String user,
     required String password,
   }) async {
-    String urlApi =
-        'https://www.androidthai.in.th/fluttertraining/JayProJ/getUserWhereMemUser.php?isAdd=true&mem_username=$user';
+    Map<String, dynamic> map = {};
+    map['isAdd'] = 'true';
+    map['mem_username'] = user;
 
-    await dio.Dio().get(urlApi).then((value) async {
-      if (value.toString() == 'null') {
-        Get.snackbar('User False', 'No $user in my Database',
-            backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
-      } else {
-        for (var element in json.decode(value.data)) {
-          UserModel userModel = UserModel.fromMap(element);
+    Uri uri = Uri.https('www.androidthai.in.th',
+        '/fluttertraining/JayProJ/getUserWhereMemUser.php', map);
 
-          String passwordSha1 = userModel.mem_password;
-          print('## passowordSha1---> $passwordSha1');
+    await http.get(uri).then((value) async {
+      if (value.statusCode == 200) {
+        if (value.body.toString() == 'null') {
+          Get.snackbar('User False', 'No $user in my Database',
+              backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
+        } else {
+          for (var element in json.decode(value.body)) {
+            UserModel userModel = UserModel.fromMap(element);
 
-          var bytes = utf8.encode(password);
-          var userPasswordSha1 = sha1.convert(bytes);
-          print('## yserPasswordSha1 --> $userPasswordSha1');
+            String passwordSha1 = userModel.mem_password;
+            print('## passowordSha1---> $passwordSha1');
 
-          if (passwordSha1 == userPasswordSha1.toString()) {
-            //Password True
+            var bytes = utf8.encode(password);
+            var userPasswordSha1 = sha1.convert(bytes);
+            print('## yserPasswordSha1 --> $userPasswordSha1');
 
-            await GetStorage().write('data', userModel.toMap()).then((value) {
-              Get.snackbar('Authen Success',
-                  'Welcome คุณ${userModel.mem_name} To my App');
+            if (passwordSha1 == userPasswordSha1.toString()) {
+              //Password True
 
-              // Get.offAll(const MainScan());
-              Get.offAll(const MainHome());
-            });
-          } else {
-            Get.snackbar('Password False', 'Please Try Again',
-                backgroundColor: GFColors.WARNING);
+              await GetStorage().write('data', userModel.toMap()).then((value) {
+                Get.snackbar('Authen Success',
+                    'Welcome คุณ${userModel.mem_name} To my App');
+
+                // Get.offAll(const MainScan());
+                Get.offAll(const MainHome());
+              });
+            } else {
+              Get.snackbar('Password False', 'Please Try Again',
+                  backgroundColor: GFColors.WARNING);
+            }
           }
         }
+      } else {
+        Get.snackbar('Connected Error', 'Pleas Try Again');
       }
     });
   }
@@ -219,7 +229,6 @@ class AppService {
   Future<AmountMitsuModel?> readAmountMitsuData(
       {required String code, required bool fromScanIn}) async {
     //forTest
-    
 
     AmountMitsuModel? amountMitsuModel;
 
